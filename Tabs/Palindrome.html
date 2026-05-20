@@ -1,0 +1,374 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>MOT.AI // PALINDROME_VALIDATOR</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#151d1e",
+                        "surface-dim": "#0d1515",
+                        "tertiary-fixed": "#e2e2e8",
+                        "tertiary": "#f6f5fb",
+                        "surface": "#0d1515",
+                        "on-secondary-fixed-variant": "#3c4d00",
+                        "surface-bright": "#333b3b",
+                        "on-tertiary-container": "#5d5f64",
+                        "background": "#0d1515",
+                        "on-secondary-container": "#556d00",
+                        "primary-container": "#00f0ff",
+                        "on-background": "#dce4e5",
+                        "surface-container-high": "#232b2c",
+                        "secondary-fixed": "#c3f400",
+                        "surface-charcoal": "#14161A",
+                        "surface-container-highest": "#2e3637",
+                        "secondary": "#ffffff",
+                        "surface-container-lowest": "#080f10",
+                        "primary": "#dbfcff",
+                        "surface-tint": "#00dbe9",
+                        "on-secondary": "#283500",
+                        "code-string": "#CCFF00",
+                        "code-keyword": "#FF79C6",
+                        "on-tertiary": "#2f3035",
+                        "inverse-surface": "#dce4e5",
+                        "inverse-on-surface": "#2a3233",
+                        "border-muted": "#2A2D35",
+                        "on-secondary-fixed": "#161e00",
+                        "surface-variant": "#2e3637",
+                        "code-comment": "#6272A4",
+                        "background-deep": "#08090B",
+                        "secondary-container": "#c3f400",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#c6c6cc",
+                        "primary-fixed-dim": "#00dbe9",
+                        "error": "#ffb4ab",
+                        "outline-variant": "#3b494b",
+                        "on-primary-fixed": "#002022",
+                        "primary-fixed": "#7df4ff",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#45474b",
+                        "on-tertiary-fixed": "#1a1c20",
+                        "on-surface": "#dce4e5",
+                        "on-primary": "#00363a",
+                        "secondary-fixed-dim": "#abd600",
+                        "outline": "#849495",
+                        "on-primary-fixed-variant": "#004f54",
+                        "on-surface-variant": "#b9cacb",
+                        "on-error": "#690005",
+                        "tertiary-container": "#d9d9df",
+                        "inverse-primary": "#006970",
+                        "on-primary-container": "#006970",
+                        "surface-container": "#192122"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "stack-md": "16px",
+                        "stack-lg": "32px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "stack-sm": "8px",
+                        "container-max": "1200px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "code-block": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "label-caps": ["JetBrains Mono"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "code-block": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .scanline-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+            z-index: 100;
+            opacity: 0.1;
+        }
+        .terminal-grid {
+            background-image: linear-gradient(to right, rgba(42, 45, 53, 0.1) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(42, 45, 53, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .terminal-cursor { animation: blink 1s step-end infinite; }
+        .code-container::-webkit-scrollbar { width: 6px; height: 6px; }
+        .code-container::-webkit-scrollbar-thumb { background: #3b494b; border-radius: 3px; }
+        .step-entry {
+            border-left: 2px solid #3b494b;
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+        .step-entry.active { border-left-color: #00dbe9; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary/30 min-h-screen terminal-grid">
+<div class="scanline-overlay"></div>
+<!-- Sidebar Navigation -->
+
+<!-- Top App Bar -->
+<header class="fixed top-0 right-0 h-16 flex justify-between items-center px-gutter bg-surface-charcoal/80 backdrop-blur-md border-b border-muted z-40 left-0">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<img alt="MOT.AI Logo" class="h-6 w-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzs8KXnItkS5hmmA4przQR7iSnz1-81XJrdgMNliBE6ALLyhJCSYIeFuHOfRV3FWrYi77EsiQ11L8RbDE6B33mQ3Z0IHu0f85qnuWJuAopYC5MwMQ75gxBwKtJaklxPgsHAfGlz75nPmu49J77fTCJqD7YdIV5ORxH6MHAAKa1k19T8rKoTGqDnLw4AkGP6ibK114GRrl8S0XNmSYGRENS96AxmtFJhMduU-lDdQQoQHn6k2JE5XJ0C7MS_j-wL6ipXzh4CPhpNkQ">
+<h1 class="font-label-caps text-label-caps font-bold text-primary tracking-widest uppercase">MOT.AI | PALINDROME_VALIDATOR</h1>
+</div>
+<div class="h-4 w-[1px] bg-muted mx-2"></div>
+<div class="flex items-center gap-2 text-on-surface-variant text-[11px] font-code-block">
+<span class="text-primary-container">λ</span>
+<span class="">MODE: TWO_POINTER_ENGINE</span>
+</div>
+</div>
+<div class="flex items-center gap-gutter">
+<button class="px-3 py-1.5 border border-muted hover:border-primary text-label-caps text-[11px] font-label-caps transition-all flex items-center gap-2 bg-background-deep" onclick="toggleCode()">
+<span class="material-symbols-outlined text-sm">code</span>
+<span id="code-toggle-text" class="">SHOW_SOURCE</span>
+</button>
+<div class="flex items-center gap-2 px-3 py-1 bg-background-deep border border-muted rounded">
+<div class="w-2 h-2 rounded-full bg-secondary-fixed animate-pulse"></div>
+<span class="text-[10px] font-label-caps text-secondary-fixed">ALGO_ACTIVE</span>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="pt-16 min-h-screen flex">
+<div class="flex-1 flex flex-col p-gutter overflow-y-auto">
+<!-- Hero Section -->
+<section class="max-w-4xl mb-stack-lg">
+<div class="flex flex-col gap-unit">
+<span class="font-label-caps text-label-caps text-secondary-fixed">COMPUTATIONAL_MODULE_02</span>
+<h1 class="font-headline-xl text-headline-xl text-primary tracking-tighter uppercase mb-2">Algorithm Test Bench</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                        Verify string sequences against the optimal O(n) two-pointer logic. Input any character sequence to trigger real-time validation breakdowns.
+                    </p>
+</div>
+</section>
+<!-- Interaction Area -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left: Input and Result -->
+<div class="lg:col-span-5 space-y-gutter">
+<!-- Input Form -->
+<div class="bg-surface-charcoal border border-muted p-gutter relative overflow-hidden">
+<div class="flex justify-between items-center mb-stack-md border-b border-muted pb-stack-sm">
+<span class="font-label-caps text-label-caps text-primary">TEST_INPUT_BUFFER</span>
+<span class="material-symbols-outlined text-on-surface-variant/40 text-sm">tune</span>
+</div>
+<div class="relative bg-background-deep border border-muted p-4 focus-within:border-primary transition-colors">
+<div class="flex items-start gap-3">
+<span class="text-primary font-code-block text-lg pt-1">&gt;</span>
+<textarea class="w-full bg-transparent border-none focus:ring-0 p-0 text-headline-md font-code-block text-on-surface resize-none h-24" id="palindrome-input" onkeyup="checkInput(this.value)" placeholder="TYPE_SEQUENCE_HERE..." spellcheck="false"></textarea>
+<span class="w-2 h-8 bg-primary terminal-cursor mt-1"></span>
+</div>
+</div>
+</div>
+<!-- Breakdown & Status -->
+<div class="bg-surface-charcoal border border-muted p-gutter transition-all duration-300 relative overflow-hidden" id="result-card">
+<div class="flex justify-between items-center mb-stack-md border-b border-muted pb-stack-sm">
+<span class="font-label-caps text-label-caps text-primary">VALIDATION_STATUS</span>
+<span class="material-symbols-outlined text-on-surface-variant/40 text-sm">analytics</span>
+</div>
+<div class="flex flex-col items-center justify-center py-6 text-center">
+<div class="text-5xl material-symbols-outlined mb-2 opacity-20" id="result-status-icon">pending</div>
+<div class="font-headline-md text-headline-md opacity-40 uppercase tracking-tight" id="result-status-text">NO_INPUT_DETECTED</div>
+</div>
+</div>
+</div>
+<!-- Right: Metrics and Visualization -->
+<div class="lg:col-span-7 space-y-gutter">
+<div class="bg-surface-charcoal border border-muted p-gutter h-full">
+<h4 class="font-label-caps text-label-caps text-primary mb-stack-md border-b border-muted pb-stack-sm">METRICS_LOG</h4>
+<div class="space-y-4 font-code-block">
+<div class="flex justify-between border-b border-muted/20 pb-2">
+<span class="text-on-surface-variant/60 text-[12px]">ALGORITHM_STRATEGY</span>
+<span class="text-secondary-fixed text-[14px]">TWO_POINTER_SYNC</span>
+</div>
+<div class="flex justify-between border-b border-muted/20 pb-2">
+<span class="text-on-surface-variant/60 text-[12px]">TIME_COMPLEXITY</span>
+<span class="text-primary text-[14px]">O(N)</span>
+</div>
+<div class="flex justify-between border-b border-muted/20 pb-2">
+<span class="text-on-surface-variant/60 text-[12px]">SPACE_COMPLEXITY</span>
+<span class="text-primary text-[14px]">O(1)</span>
+</div>
+<div class="flex justify-between border-b border-muted/20 pb-2" id="char-count">
+<span class="text-on-surface-variant/60 text-[12px]">BUFFER_SIZE</span>
+<span class="text-on-surface text-[14px]">0_BYTES</span>
+</div>
+</div>
+<!-- Real-time Comparison Log (Dummy visualization of pointers) -->
+<div class="mt-8">
+<div class="font-label-caps text-[10px] text-on-surface-variant/50 mb-4 uppercase">Logic_Execution_Trace</div>
+<div class="bg-background-deep border border-muted p-4 h-32 overflow-y-auto code-container text-[12px] font-code-block text-on-surface-variant" id="execution-trace">
+<div class="opacity-30">Waiting for data packet sequence...</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar Source Code Panel -->
+<aside class="w-0 overflow-hidden border-l border-muted bg-surface-container-lowest transition-all duration-500 ease-in-out flex flex-col" id="code-panel">
+<div class="p-4 border-b border-muted flex justify-between items-center bg-surface-charcoal">
+<span class="font-label-caps text-[11px] text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">description</span>
+                    PalindromeChecker.java
+                </span>
+<button class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1" onclick="copyCode()">
+<span class="material-symbols-outlined text-sm" id="copy-icon">content_copy</span>
+<span class="text-[10px] font-label-caps">COPY</span>
+</button>
+</div>
+<div class="flex-1 p-6 overflow-auto code-container bg-background-deep">
+<pre class="font-code-block text-code-block leading-relaxed"><code id="code-content"><span class="text-code-keyword">public class</span> <span class="text-primary">PalindromeChecker</span> {
+    <span class="text-code-comment">// Evaluates if a string reads same forward and backward</span>
+    <span class="text-code-keyword">public boolean</span> <span class="text-primary">isPalindrome</span>(String s) {
+        <span class="text-code-keyword">int</span> left = <span class="text-code-string">0</span>;
+        <span class="text-code-keyword">int</span> right = s.length() - <span class="text-code-string">1</span>;
+
+        <span class="text-code-keyword">while</span> (left &lt; right) {
+            <span class="text-code-keyword">if</span> (s.charAt(left) != s.charAt(right)) {
+                <span class="text-code-keyword">return false</span>;
+            }
+            left++;
+            right--;
+        }
+        <span class="text-code-keyword">return true</span>;
+    }
+}</code></pre>
+</div>
+<div class="bg-surface-charcoal border-t border-muted p-stack-md flex justify-between items-center text-[11px] font-label-caps text-on-surface-variant/60">
+<div class="flex gap-4">
+<span class="">LINES: 18</span>
+<span class="">ENCODING: UTF-8</span>
+</div>
+<span class="text-primary">STATUS: READ_ONLY</span>
+</div>
+</aside>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest border-t border-muted py-stack-md px-gutter flex flex-col md:flex-row justify-between items-center gap-stack-sm text-on-tertiary-fixed-variant">
+<div class="flex flex-col gap-1">
+<span class="font-label-caps text-label-caps text-secondary-fixed">INDUSTRIAL_COMPUTE_LAB // RUNTIME_MONITOR</span>
+<span class="text-[10px] text-on-surface-variant/50 font-label-caps uppercase">© 2024 // ALL_RIGHTS_RESERVED // MOT.AI INFRASTRUCTURE</span>
+</div>
+<div class="flex gap-gutter">
+<div class="flex items-center gap-4">
+<span class="font-label-caps text-[11px]">API_STATUS_OK</span>
+<span class="text-primary-fixed-dim font-label-caps text-[11px]">CPU_LOAD: 02%</span>
+</div>
+<div class="h-4 w-[1px] bg-muted/20"></div>
+<a class="font-label-caps text-label-caps hover:text-primary transition-colors text-[11px]" href="#">Documentation</a>
+<a class="font-label-caps text-label-caps hover:text-primary transition-colors text-[11px]" href="#">Changelog</a>
+</div>
+</footer>
+<script>
+        let isCodeVisible = false;
+
+        function toggleCode() {
+            const panel = document.getElementById('code-panel');
+            const toggleText = document.getElementById('code-toggle-text');
+            isCodeVisible = !isCodeVisible;
+            
+            if (isCodeVisible) {
+                panel.style.width = '40%';
+                toggleText.innerText = 'HIDE_SOURCE';
+            } else {
+                panel.style.width = '0';
+                toggleText.innerText = 'SHOW_SOURCE';
+            }
+        }
+
+        function checkInput(val) {
+            const statusText = document.getElementById('result-status-text');
+            const statusIcon = document.getElementById('result-status-icon');
+            const resultCard = document.getElementById('result-card');
+            const charCount = document.getElementById('char-count').lastElementChild;
+            const trace = document.getElementById('execution-trace');
+
+            charCount.innerText = val.length + '_BYTES';
+
+            if (!val.trim()) {
+                statusText.innerText = 'NO_INPUT_DETECTED';
+                statusIcon.innerText = 'pending';
+                statusText.className = 'font-headline-md text-headline-md opacity-40 uppercase';
+                statusIcon.className = 'text-5xl material-symbols-outlined mb-2 opacity-20';
+                resultCard.style.borderColor = '#2A2D35';
+                trace.innerHTML = '<div class="opacity-30">Waiting for data packet sequence...</div>';
+                return;
+            }
+            
+            const clean = val.toLowerCase().replace(/[^a-z0-9]/g, '');
+            if (clean.length === 0) {
+                statusText.innerText = 'WAITING_FOR_VALID_CHARS...';
+                return;
+            }
+
+            const isPalindrome = clean === clean.split('').reverse().join('');
+            
+            // Visualization trace
+            let traceHtml = `<div class="text-secondary-fixed mb-1">[ OK ] Sequence received: "${val.substring(0, 20)}${val.length > 20 ? '...' : ''}"</div>`;
+            traceHtml += `<div class="text-primary mb-1">[ TRACE ] Pointer comparison starting...</div>`;
+            
+            if (isPalindrome) {
+                statusText.innerText = 'SEQUENCE_VALID';
+                statusIcon.innerText = 'check_circle';
+                statusText.className = 'font-headline-md text-headline-md text-secondary-fixed tracking-tight';
+                statusIcon.className = 'text-5xl material-symbols-outlined mb-2 text-secondary-fixed animate-pulse';
+                resultCard.style.borderColor = 'rgba(195, 244, 0, 0.4)';
+                traceHtml += `<div class="text-secondary-fixed">[ DONE ] Symmetry confirmed at O(n/2) steps.</div>`;
+            } else {
+                statusText.innerText = 'INVALID_SEQUENCE';
+                statusIcon.innerText = 'error';
+                statusText.className = 'font-headline-md text-headline-md text-error tracking-tight';
+                statusIcon.className = 'text-5xl material-symbols-outlined mb-2 text-error';
+                resultCard.style.borderColor = 'rgba(255, 180, 171, 0.4)';
+                traceHtml += `<div class="text-error">[ FAIL ] Mismatch detected. Exiting loop.</div>`;
+            }
+            trace.innerHTML = traceHtml;
+        }
+
+        function copyCode() {
+            const code = document.getElementById('code-content').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const icon = document.getElementById('copy-icon');
+                const original = icon.innerText;
+                icon.innerText = 'done';
+                setTimeout(() => { icon.innerText = original; }, 2000);
+            });
+        }
+    </script>
+
+
+</body></html>

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MOT.AI | COLLATZ_ENGINE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700;800&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#45474b",
+                        "tertiary-fixed": "#e2e2e8",
+                        "on-tertiary-container": "#5d5f64",
+                        "surface-container-highest": "#2e3637",
+                        "code-keyword": "#FF79C6",
+                        "surface-container-low": "#151d1e",
+                        "on-primary-fixed-variant": "#004f54",
+                        "surface-container-lowest": "#080f10",
+                        "inverse-on-surface": "#2a3233",
+                        "code-comment": "#6272A4",
+                        "surface-bright": "#333b3b",
+                        "on-primary": "#00363a",
+                        "inverse-primary": "#006970",
+                        "on-primary-container": "#006970",
+                        "surface-container-high": "#232b2c",
+                        "primary": "#dbfcff",
+                        "on-secondary-container": "#556d00",
+                        "on-background": "#dce4e5",
+                        "surface-charcoal": "#14161A",
+                        "tertiary-fixed-dim": "#c6c6cc",
+                        "tertiary": "#f6f5fb",
+                        "tertiary-container": "#d9d9df",
+                        "secondary-container": "#c3f400",
+                        "surface-tint": "#00dbe9",
+                        "surface": "#0d1515",
+                        "primary-container": "#00f0ff",
+                        "inverse-surface": "#dce4e5",
+                        "primary-fixed-dim": "#00dbe9",
+                        "outline-variant": "#3b494b",
+                        "primary-fixed": "#7df4ff",
+                        "on-tertiary": "#2f3035",
+                        "on-surface": "#dce4e5",
+                        "on-primary-fixed": "#002022",
+                        "code-string": "#CCFF00",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed": "#1a1c20",
+                        "on-secondary": "#283500",
+                        "error-container": "#93000a",
+                        "background": "#0d1515",
+                        "background-deep": "#08090B",
+                        "surface-dim": "#0d1515",
+                        "outline": "#849495",
+                        "on-error": "#690005",
+                        "border-muted": "#2A2D35",
+                        "surface-container": "#192122",
+                        "on-secondary-fixed-variant": "#3c4d00",
+                        "secondary-fixed-dim": "#abd600",
+                        "on-surface-variant": "#b9cacb",
+                        "secondary": "#ffffff",
+                        "surface-variant": "#2e3637",
+                        "on-secondary-fixed": "#161e00",
+                        "secondary-fixed": "#c3f400"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "container-max": "1200px",
+                        "stack-sm": "8px",
+                        "margin-mobile": "16px",
+                        "unit": "4px",
+                        "stack-md": "16px",
+                        "stack-lg": "32px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "code-block": ["JetBrains Mono"],
+                        "label-caps": ["JetBrains Mono"],
+                        "body-lg": ["Inter"],
+                        "headline-xl": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "code-block": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .scanline {
+            background: linear-gradient(to bottom, rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+        .terminal-glow:focus-within {
+            box-shadow: 0 0 15px rgba(0, 219, 233, 0.15);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0d1515;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2A2D35;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #00dbe9;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container min-h-screen overflow-x-hidden">
+<!-- Atmospheric Background Layers -->
+<div class="fixed inset-0 scanline opacity-30 z-[100]"></div>
+<div class="fixed inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,219,233,0.03),transparent_70%)] pointer-events-none"></div>
+<!-- Sidebar and topbar removed; shared by parent index.html -->
+<main class="p-gutter flex-1 min-h-screen">
+<!-- Page Canvas -->
+<div class="flex-grow p-gutter max-w-container-max mx-auto w-full">
+<!-- Hero Title Section -->
+<div class="mb-stack-lg border-l-4 border-primary pl-gutter py-2">
+<h1 class="font-headline-xl text-headline-xl text-primary tracking-tighter mb-2">ALGORITHM TEST BENCH: COLLATZ</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Verify sequence convergence for any positive integer input using the 3n + 1 conjecture model.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Input & Controller Column -->
+<div class="lg:col-span-5 space-y-gutter">
+<!-- Parameter Terminal -->
+<section class="bg-surface-charcoal border border-muted terminal-glow overflow-hidden">
+<div class="bg-surface-variant/50 px-gutter py-2 border-b border-muted flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-on-surface">PARAMETER_INPUT_V1</span>
+<div class="flex gap-1.5">
+<div class="w-2.5 h-2.5 rounded-full bg-error/40"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-secondary-fixed/40"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-primary/40"></div>
+</div>
+</div>
+<div class="p-gutter space-y-stack-lg">
+<div class="space-y-stack-sm">
+<label class="font-label-caps text-label-caps text-primary block">SEED_INTEGER_VAL</label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-primary font-code-block">&gt;</span>
+<input class="w-full bg-background-deep border border-muted p-4 pl-8 font-code-block text-primary focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all" id="collatzInput" min="1" type="number" value="27"/>
+</div>
+<p class="text-[10px] font-label-caps text-on-surface-variant/60">SYSTEM_REMARK: PREFERRED INPUT RANGE [1 - 2^32]</p>
+</div>
+<button class="w-full bg-primary text-on-primary font-label-caps py-4 flex items-center justify-center gap-stack-md group hover:bg-primary-fixed-dim transition-all active:scale-[0.98]" onclick="runCollatz()">
+<span class="material-symbols-outlined" data-icon="play_arrow">play_arrow</span>
+                                EXECUTE_SEQUENCE
+                                <span class="absolute right-4 opacity-0 group-hover:opacity-100 transition-opacity">_READY</span>
+</button>
+</div>
+</section>
+<!-- Mathematical Breakdown Window -->
+<section class="bg-surface-charcoal border border-muted h-[400px] flex flex-col">
+<div class="bg-surface-variant/50 px-gutter py-2 border-b border-muted flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-on-surface">MATHEMATICAL_BREAKDOWN</span>
+<span class="text-[10px] font-label-caps text-secondary-fixed" id="stepCount">STEPS: 0</span>
+</div>
+<div class="flex-grow overflow-y-auto p-gutter custom-scrollbar font-code-block text-sm space-y-1" id="resultArea">
+<div class="text-on-surface-variant/40 italic">// Awaiting initialization...</div>
+<div class="text-on-surface-variant/40 italic">// Input positive integer to begin compute.</div>
+</div>
+<div class="bg-background-deep px-gutter py-3 border-t border-muted">
+<div class="flex justify-between items-center">
+<div class="flex gap-4">
+<div class="flex flex-col">
+<span class="text-[10px] font-label-caps text-on-surface-variant/60">PEAK_VAL</span>
+<span class="text-xs font-code-block text-secondary-fixed" id="peakVal">--</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] font-label-caps text-on-surface-variant/60">CONVERGENCE</span>
+<span class="text-xs font-code-block text-primary" id="convergence">PENDING</span>
+</div>
+</div>
+<button class="text-primary hover:underline font-label-caps text-[10px]" onclick="clearResults()">_CLEAR_LOG</button>
+</div>
+</div>
+</section>
+</div>
+<!-- Source Code Column -->
+<div class="lg:col-span-7">
+<section class="bg-surface-charcoal border border-muted h-full flex flex-col overflow-hidden relative">
+<!-- Code Header -->
+<div class="bg-surface-variant/50 px-gutter py-3 border-b border-muted flex justify-between items-center">
+<div class="flex items-center gap-stack-md">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="description">description</span>
+<span class="font-label-caps text-label-caps text-on-surface">CollatzSequence.java</span>
+</div>
+<div class="flex items-center gap-stack-sm">
+<button class="p-1 hover:bg-surface-variant transition-colors rounded text-secondary-fixed" title="Copy Code">
+<span class="material-symbols-outlined text-sm" data-icon="content_copy">content_copy</span>
+</button>
+<span class="px-2 py-0.5 bg-background-deep border border-muted text-[10px] font-label-caps text-on-surface-variant">UTF-8</span>
+</div>
+</div>
+<!-- Code Content -->
+<div class="flex-grow overflow-y-auto bg-background-deep p-gutter custom-scrollbar relative">
+<pre class="font-code-block text-code-block leading-relaxed"><span class="text-code-comment">/**
+ * MOT.AI Industrial Compute Lab
+ * Algorithm: Collatz Conjecture (3n + 1)
+ * Stability: STABLE_RELEASE
+ */</span>
+<span class="text-code-keyword">public class</span> <span class="text-primary">CollatzSequence</span> {
+    
+    <span class="text-code-keyword">public static void</span> <span class="text-secondary-fixed">main</span>(String[] args) {
+        <span class="text-code-keyword">long</span> n = 27; <span class="text-code-comment">// Parameter Input</span>
+        <span class="text-primary">calculateSequence</span>(n);
+    }
+
+    <span class="text-code-keyword">public static void</span> <span class="text-primary">calculateSequence</span>(<span class="text-code-keyword">long</span> n) {
+        <span class="text-code-keyword">int</span> steps = 0;
+        System.out.<span class="text-primary">println</span>(<span class="text-code-string">"START_VAL: "</span> + n);
+
+        <span class="text-code-keyword">while</span> (n != 1) {
+            <span class="text-code-keyword">if</span> (n % 2 == 0) {
+                n = n / 2;
+            } <span class="text-code-keyword">else</span> {
+                n = (3 * n) + 1;
+            }
+            steps++;
+            System.out.<span class="text-primary">println</span>(<span class="text-code-string">"STEP_"</span> + steps + <span class="text-code-string">": "</span> + n);
+        }
+        
+        System.out.<span class="text-primary">println</span>(<span class="text-code-string">"--- CONVERGENCE REACHED ---"</span>);
+        System.out.<span class="text-primary">println</span>(<span class="text-code-string">"TOTAL_STEPS: "</span> + steps);
+    }
+}</pre>
+<!-- Visualization Overlay (Optional/Atmospheric) -->
+<div class="absolute right-4 top-20 w-32 h-64 opacity-10 pointer-events-none">
+<div class="w-full h-full border border-primary flex items-end p-2 gap-1">
+<div class="w-1 bg-primary h-[10%]"></div>
+<div class="w-1 bg-primary h-[30%]"></div>
+<div class="w-1 bg-primary h-[25%]"></div>
+<div class="w-1 bg-primary h-[60%]"></div>
+<div class="w-1 bg-primary h-[45%]"></div>
+<div class="w-1 bg-primary h-[85%]"></div>
+<div class="w-1 bg-primary h-[15%]"></div>
+</div>
+</div>
+</div>
+<!-- Code Footer -->
+<div class="p-4 bg-surface-variant/30 border-t border-muted">
+<div class="flex items-center gap-4">
+<div class="h-2 w-full bg-background-deep rounded-full overflow-hidden">
+<div class="h-full bg-primary w-2/3 shadow-[0_0_8px_#dbfcff]"></div>
+</div>
+<span class="text-[10px] font-label-caps text-on-surface-variant whitespace-nowrap">CPU_ALLOCATION: 0.04ms</span>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- Dashboard Graphics (Asymmetric Layout Elements) -->
+<div class="mt-stack-lg grid grid-cols-1 md:grid-cols-3 gap-gutter opacity-60 grayscale hover:grayscale-0 transition-all duration-700">
+<div class="border border-muted p-gutter bg-surface-charcoal relative overflow-hidden group">
+<div class="absolute -right-4 -bottom-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-8xl" data-icon="architecture">architecture</span>
+</div>
+<h3 class="font-label-caps text-on-surface mb-2">PRECISION_GRID</h3>
+<div class="space-y-1">
+<div class="h-1 bg-primary/20 w-full"></div>
+<div class="h-1 bg-primary/20 w-[80%]"></div>
+<div class="h-1 bg-primary/20 w-[95%]"></div>
+</div>
+</div>
+<div class="border border-muted p-gutter bg-surface-charcoal flex flex-col justify-between">
+<h3 class="font-label-caps text-on-surface">NETWORK_LATENCY</h3>
+<div class="flex items-end gap-1 h-12">
+<div class="w-2 bg-secondary-fixed h-4 animate-bounce" style="animation-delay: 0.1s"></div>
+<div class="w-2 bg-secondary-fixed h-8 animate-bounce" style="animation-delay: 0.2s"></div>
+<div class="w-2 bg-secondary-fixed h-6 animate-bounce" style="animation-delay: 0.3s"></div>
+<div class="w-2 bg-secondary-fixed h-10 animate-bounce" style="animation-delay: 0.4s"></div>
+</div>
+</div>
+<div class="border border-muted p-gutter bg-surface-charcoal relative">
+<div class="absolute top-2 right-2">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="verified_user">verified_user</span>
+</div>
+<h3 class="font-label-caps text-on-surface mb-2">AUTH_TOKEN</h3>
+<p class="font-code-block text-[10px] text-on-surface-variant truncate">0x9F2E...44BB_STABLE_CONN</p>
+</div>
+</div>
+</div>
+<!-- Footer (Shared Component) -->
+<footer class="flex flex-col md:flex-row justify-between items-center w-full py-stack-md px-gutter mt-auto border-t border-muted bg-surface-container-lowest gap-stack-sm text-on-tertiary-fixed-variant">
+<div class="font-label-caps text-label-caps text-secondary-fixed">
+                © 2024 INDUSTRIAL_COMPUTE_LAB // ALL_RIGHTS_RESERVED
+            </div>
+<div class="flex gap-stack-lg">
+<a class="font-label-caps text-label-caps hover:text-primary transition-colors" href="#">Documentation</a>
+<a class="font-label-caps text-label-caps hover:text-primary transition-colors" href="#">Changelog</a>
+<a class="font-label-caps text-label-caps hover:text-primary transition-colors" href="#">Security</a>
+<a class="font-label-caps text-label-caps hover:text-primary transition-colors" href="#">Status</a>
+</div>
+</footer>
+</main>
+<script>
+        function runCollatz() {
+            const input = document.getElementById('collatzInput');
+            const resultArea = document.getElementById('resultArea');
+            const stepCountDisplay = document.getElementById('stepCount');
+            const peakValDisplay = document.getElementById('peakVal');
+            const convergenceDisplay = document.getElementById('convergence');
+
+            let n = parseInt(input.value);
+            if (isNaN(n) || n < 1) {
+                alert("ERROR: INVALID_INPUT. PLEASE ENTER POSITIVE INTEGER.");
+                return;
+            }
+
+            resultArea.innerHTML = `<div class="text-primary font-bold">[SYSTEM_MSG] INITIALIZING SEQUENCE FOR: ${n}</div>`;
+            
+            let steps = 0;
+            let current = n;
+            let peak = n;
+            
+            const processStep = () => {
+                if (current === 1) {
+                    resultArea.innerHTML += `<div class="text-secondary-fixed font-bold mt-2">--- CONVERGENCE_LOCKED (1) ---</div>`;
+                    convergenceDisplay.innerText = "SUCCESS";
+                    resultArea.scrollTop = resultArea.scrollHeight;
+                    return;
+                }
+
+                steps++;
+                if (current % 2 === 0) {
+                    current = current / 2;
+                } else {
+                    current = (3 * current) + 1;
+                }
+
+                if (current > peak) peak = current;
+
+                const stepDiv = document.createElement('div');
+                stepDiv.className = "flex gap-4 border-l border-muted pl-2 hover:bg-surface-variant/20 transition-all";
+                stepDiv.innerHTML = `
+                    <span class="text-on-surface-variant/40 w-12 shrink-0">S_${steps.toString().padStart(3, '0')}</span>
+                    <span class="text-primary">${current}</span>
+                `;
+                resultArea.appendChild(stepDiv);
+                
+                stepCountDisplay.innerText = `STEPS: ${steps}`;
+                peakValDisplay.innerText = peak;
+                resultArea.scrollTop = resultArea.scrollHeight;
+
+                // Micro-interaction: recursive timeout to simulate terminal streaming
+                setTimeout(processStep, 30);
+            };
+
+            convergenceDisplay.innerText = "PROCESSING";
+            processStep();
+        }
+
+        function clearResults() {
+            document.getElementById('resultArea').innerHTML = `<div class="text-on-surface-variant/40 italic">// Logs cleared. Ready for input.</div>`;
+            document.getElementById('stepCount').innerText = "STEPS: 0";
+            document.getElementById('peakVal').innerText = "--";
+            document.getElementById('convergence').innerText = "PENDING";
+        }
+    </script>
+</body></html>

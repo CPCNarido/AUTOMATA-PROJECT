@@ -1,0 +1,386 @@
+<!DOCTYPE html><html class="dark" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>MOT.AI // ALGORITHM_SUITE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#151d1e",
+                    "surface-dim": "#0d1515",
+                    "tertiary-fixed": "#e2e2e8",
+                    "tertiary": "#f6f5fb",
+                    "surface": "#0d1515",
+                    "on-secondary-fixed-variant": "#3c4d00",
+                    "surface-bright": "#333b3b",
+                    "on-tertiary-container": "#5d5f64",
+                    "background": "#0d1515",
+                    "on-secondary-container": "#556d00",
+                    "primary-container": "#00f0ff",
+                    "on-background": "#dce4e5",
+                    "surface-container-high": "#232b2c",
+                    "secondary-fixed": "#c3f400",
+                    "surface-charcoal": "#14161A",
+                    "surface-container-highest": "#2e3637",
+                    "secondary": "#ffffff",
+                    "surface-container-lowest": "#080f10",
+                    "primary": "#dbfcff",
+                    "surface-tint": "#00dbe9",
+                    "on-secondary": "#283500",
+                    "code-string": "#CCFF00",
+                    "code-keyword": "#FF79C6",
+                    "on-tertiary": "#2f3035",
+                    "inverse-surface": "#dce4e5",
+                    "inverse-on-surface": "#2a3233",
+                    "border-muted": "#2A2D35",
+                    "on-secondary-fixed": "#161e00",
+                    "surface-variant": "#2e3637",
+                    "code-comment": "#6272A4",
+                    "background-deep": "#08090B",
+                    "secondary-container": "#c3f400",
+                    "on-error-container": "#ffdad6",
+                    "tertiary-fixed-dim": "#c6c6cc",
+                    "primary-fixed-dim": "#00dbe9",
+                    "error": "#ffb4ab",
+                    "outline-variant": "#3b494b",
+                    "on-primary-fixed": "#002022",
+                    "primary-fixed": "#7df4ff",
+                    "error-container": "#93000a",
+                    "on-tertiary-fixed-variant": "#45474b",
+                    "on-tertiary-fixed": "#1a1c20",
+                    "on-surface": "#dce4e5",
+                    "on-primary": "#00363a",
+                    "secondary-fixed-dim": "#abd600",
+                    "outline": "#849495",
+                    "on-primary-fixed-variant": "#004f54",
+                    "on-surface-variant": "#b9cacb",
+                    "on-error": "#690005",
+                    "tertiary-container": "#d9d9df",
+                    "inverse-primary": "#006970",
+                    "on-primary-container": "#006970",
+                    "surface-container": "#192122"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "stack-md": "16px",
+                    "stack-lg": "32px",
+                    "gutter": "24px",
+                    "margin-mobile": "16px",
+                    "stack-sm": "8px",
+                    "container-max": "1200px"
+            },
+            "fontFamily": {
+                    "headline-xl": ["Hanken Grotesk"],
+                    "headline-lg": ["Hanken Grotesk"],
+                    "code-block": ["JetBrains Mono"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Hanken Grotesk"],
+                    "label-caps": ["JetBrains Mono"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "code-block": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        .scanline-effect::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(0deg, transparent 0%, rgba(0, 240, 255, 0.05) 50%, transparent 100%);
+            animation: scanline 8s linear infinite;
+            pointer-events: none;
+        }
+        .terminal-grid {
+            background-image: linear-gradient(to right, rgba(42, 45, 53, 0.1) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(42, 45, 53, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .fade-out {
+            animation: fadeOut 1.2s forwards;
+            animation-delay: 2s;
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; visibility: visible; }
+            to { opacity: 0; visibility: hidden; }
+        }
+        .blink { animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+    </style>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- SPLASH SCREEN -->
+<div class="fixed inset-0 z-[100] bg-background-deep flex flex-col items-center justify-center fade-out pointer-events-none" id="splash">
+<div class="relative group">
+<div class="absolute -inset-4 bg-primary-container/20 blur-xl opacity-50 group-hover:opacity-100 transition duration-1000"></div>
+<img alt="MOT.AI Logo" class="relative w-48 md:w-64 mb-stack-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMNFDBgprDAiqB03ArIdvehcg0vtB3IaNix7ED7zWgvNitOVvkG1A-XZr9QSN_ykuH6AqvKGQxXzFZGOG0Z64xUGn8HoH5MEQfF69c3TO_oZ75H7z_u2Ae8AwVu9pdAGyB6f1O8wQ3-7BnSb7YGA6ROzjLpBFwxB1ljqCnVojOXKuVGreMFmTxxNd9ayy0Cx50mWzKFcus46VI7wSIBdfqEF3z6Q6qGB5dq-t3UkO_vwAFb61Vfvjj_Y3zOZL_t2zGt6XpksHi9S4">
+</div>
+<div class="text-center space-y-2">
+<h1 class="font-headline-xl text-headline-xl tracking-tighter text-primary">INITIALIZING_MOT.AI</h1>
+<div class="flex items-center justify-center gap-2 font-label-caps text-label-caps text-primary/60">
+<span class="">V1.0.4-STABLE</span>
+<span class="w-2 h-4 bg-primary-container blink"></span>
+</div>
+</div>
+</div>
+<!-- SIDEBAR NAVIGATION -->
+<aside class="fixed left-0 top-0 h-full w-64 flex flex-col z-50 bg-surface-container-lowest border-r border-muted shadow-[0_0_15px_rgba(0,219,233,0.1)]">
+<div class="p-gutter border-b border-muted">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-10 h-10 rounded-lg bg-surface-charcoal border border-primary/30 flex items-center justify-center overflow-hidden">
+<img alt="MOT.AI" class="w-6 h-6 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMNFDBgprDAiqB03ArIdvehcg0vtB3IaNix7ED7zWgvNitOVvkG1A-XZr9QSN_ykuH6AqvKGQxXzFZGOG0Z64xUGn8HoH5MEQfF69c3TO_oZ75H7z_u2Ae8AwVu9pdAGyB6f1O8wQ3-7BnSb7YGA6ROzjLpBFwxB1ljqCnVojOXKuVGreMFmTxxNd9ayy0Cx50mWzKFcus46VI7wSIBdfqEF3z6Q6qGB5dq-t3UkO_vwAFb61Vfvjj_Y3zOZL_t2zGt6XpksHi9S4">
+</div>
+<div>
+<div class="font-label-caps text-label-caps tracking-widest text-primary uppercase">DEV_SHELL</div>
+<div class="text-[10px] text-on-surface-variant font-code-block opacity-60">v1.0.4-stable</div>
+</div>
+</div>
+</div>
+<nav class="flex-1 py-stack-md overflow-y-auto">
+<div class="px-gutter mb-stack-sm font-label-caps text-[10px] text-on-surface-variant/40 tracking-[0.2em]">ALGORITHM_SUITE</div>
+<a id="nav-home" class="flex items-center gap-3 text-primary bg-surface-variant/30 border-l-2 border-primary px-4 py-3 font-label-caps translate-x-1 transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined text-primary">terminal</span>Home</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:text-primary hover:bg-surface-variant/20 px-4 py-3 transition-all duration-200 font-label-caps" href="#">
+<span class="material-symbols-outlined">calculate</span>Case Studies</a>
+<div class="ml-10 space-y-1 mt-1 border-l border-muted/30">
+<a class="block py-2 px-4 text-on-surface-variant/70 hover:text-primary text-[11px] font-label-caps transition-colors case-link" href="#" data-path="Tabs/Palindrome.html">&gt;&gt; PALINDROME</a>
+<a class="block py-2 px-4 text-on-surface-variant/70 hover:text-primary text-[11px] font-label-caps transition-colors case-link" href="#" data-path="Tabs/Collatz.html">&gt;&gt; COLLATZ</a>
+<a class="block py-2 px-4 text-on-surface-variant/70 hover:text-primary text-[11px] font-label-caps transition-colors case-link" href="#" data-path="Tabs/Division.html">&gt;&gt; DIVISION</a>
+<a class="block py-2 px-4 text-on-surface-variant/70 hover:text-primary text-[11px] font-label-caps transition-colors case-link" href="#" data-path="Tabs/Euclidean.html">&gt;&gt; EUCLIDEAN</a>
+<a class="block py-2 px-4 text-on-surface-variant/70 hover:text-primary text-[11px] font-label-caps transition-colors case-link" href="#" data-path="Tabs/Fibonacci.html">&gt;&gt; RECURSIVE</a>
+</div>
+</nav>
+<div class="p-gutter border-t border-muted bg-surface-container-low/50">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary/10 border border-primary/20 flex items-center justify-center overflow-hidden">
+<img alt="Developer avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIWQu5HAKdskubsBNGoECl90YH4NGUshWRrk9LorUywUHbvx6pxwyGuh1mbipPVIM1LHXPgUVpT_MrDZ2TOCJxJBsueSMaSGsvh0htZqNTTFd0zYdj0qopjxLRxTXXFZ5frlXUEV_8MsVcQ_vLAKGD8CWcUKQY80ACLxLjmfCMfrUgNcn6u_odu0XAZZX46PWjFDzYtGS5gb8frbhIGhfsZ2rj8OMXOMy8Ce8g9y1J1mQhQlMHS6cIhMYls_GI8OExRVtKWpDPfLk">
+</div>
+<div class="overflow-hidden">
+<div class="font-label-caps text-[10px] text-primary truncate uppercase">MOT_USER_ROOT</div>
+<div class="text-[9px] text-on-surface-variant/60 font-code-block uppercase">STATUS: ONLINE</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- TOP APP BAR -->
+<header class="fixed left-64 top-0 right-0 h-16 flex justify-between items-center px-gutter bg-surface-charcoal/80 backdrop-blur-md border-b border-muted z-40">
+<div class="flex items-center gap-4">
+<span class="font-label-caps text-label-caps font-bold text-primary tracking-widest">SYS.LOG</span>
+<div class="h-4 w-[1px] bg-muted mx-2"></div>
+<div class="flex items-center gap-2 text-on-surface-variant text-[11px] font-code-block">
+<span class="text-primary-container">λ</span>
+<span class="">MOT_AI:/HOME/DASHBOARD</span>
+</div>
+</div>
+<div class="flex items-center gap-gutter">
+<div class="flex items-center gap-4 text-on-surface-variant">
+<button class="hover:text-primary transition-all duration-200">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="hover:text-primary transition-all duration-200">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+<div class="w-[1px] h-4 bg-muted/40"></div>
+<div class="w-2 h-2 rounded-full bg-secondary-fixed shadow-[0_0_8px_rgba(195,244,0,0.4)]"></div>
+</div>
+</div>
+</header>
+<!-- MAIN CONTENT CANVAS -->
+<main class="ml-64 pt-16 min-h-screen terminal-grid scanline-effect relative">
+<div class="max-w-[1200px] mx-auto px-gutter py-stack-lg space-y-stack-lg">
+<!-- HOME CONTENT START -->
+<div id="home-content">
+<!-- HERO SECTION -->
+<section class="relative rounded-xl overflow-hidden border border-muted bg-surface-charcoal p-10 flex flex-col md:flex-row items-center gap-stack-lg shadow-[inset_0_0_50px_rgba(0,219,233,0.05)]">
+<div class="flex-1 space-y-stack-md text-left z-10">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 border border-primary/30 rounded-full">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span>
+<span class="font-label-caps text-[10px] text-primary tracking-widest uppercase">CORE_ALGORITHM_SUITE_V1</span>
+</div>
+<h2 class="font-headline-xl text-headline-xl text-primary leading-tight">MASTERING THE<br>LOGIC OF MOT.AI</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
+                        A cyber-industrial environment dedicated to the exploration and execution of complex computational patterns. From Palindrome detection to Euclidean geometry—redefined.
+                    </p>
+<div class="flex gap-4 pt-4">
+<button class="px-8 py-3 bg-primary-container text-on-primary font-label-caps text-label-caps rounded-lg hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] transition-all duration-300 transform active:scale-95">
+                            LAUNCH_TERMINAL
+                        </button>
+<button class="px-8 py-3 border border-primary text-primary font-label-caps text-label-caps rounded-lg hover:bg-primary/5 transition-all duration-300">
+                            _VIEW_DOCUMENTATION
+                        </button>
+</div>
+</div>
+<div class="flex-1 relative z-10">
+<div class="relative w-full aspect-square max-w-[400px]">
+<div class="absolute inset-0 bg-primary/20 blur-3xl rounded-full animate-pulse"></div>
+<img class="rounded-xl border border-muted shadow-2xl relative z-10 opacity-80 mix-blend-screen" data-alt="Futuristic cyber-industrial motherboard" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyFVFLXQIIM6-P9S-MdadecI3DKxNfKTEvMA2t7zjVGW-NeNCYiYGsoK8D_xuMlBO_W3oc7NgTtNikW4YwlWhjijiUHa0rsUYyiFmDKCEHj2lwCxRCO_iNQ1sNqut-WOhGdwLW8qpBIExeT8v5mHOCpL64jnwcFprN8b_J12EYk48h7VIwJ5E8RBnJ6Q40pRCcZI46_P0ke8GKt6Gz6rVUGf1dV_fWW_PHlFIvLCZbbtELRyMnU6mIDxaAQnpOoqR3Xc3uIY6gTNk">
+</div>
+</div>
+</section>
+<!-- PROFESSOR SECTION & ALGORITHM GRID -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="md:col-span-1 p-stack-lg bg-surface-container-low border border-primary/40 rounded-xl relative group overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary text-4xl">school</span>
+</div>
+<div class="font-label-caps text-label-caps text-primary/60 mb-2 uppercase">Submitted to:</div>
+<h3 class="font-headline-lg text-headline-lg text-primary mb-4">[PROFESSOR_NAME_HERE]</h3>
+<div class="space-y-2">
+<div class="flex justify-between text-[11px] font-code-block text-on-surface-variant">
+<span class="">DEPARTMENT</span>
+<span class="text-primary">CCIS</span>
+</div>
+<div class="w-full bg-muted/20 h-1 rounded-full overflow-hidden">
+<div class="bg-primary w-full h-full"></div>
+</div>
+</div>
+</div>
+<!-- BENTO GRID FOR ALGORITHMS -->
+<div class="md:col-span-2 grid grid-cols-2 gap-stack-md">
+<div class="bg-surface-charcoal border border-muted p-stack-md rounded-xl hover:border-primary transition-all group">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-primary">psychology</span>
+<span class="font-label-caps text-[10px] text-on-surface-variant/40">ID: 0x0A1</span>
+</div>
+<div class="font-label-caps text-label-caps text-primary mb-1">RECURSIVE_PATTERNS</div>
+<p class="text-[12px] text-on-surface-variant font-code-block">Visualizing the infinity of depth-first logic.</p>
+</div>
+<div class="bg-surface-charcoal border border-muted p-stack-md rounded-xl hover:border-primary transition-all group">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-primary">shapes</span>
+<span class="material-symbols-outlined text-primary text-[14px]">arrow_forward</span>
+</div>
+<div class="font-label-caps text-label-caps text-primary mb-1">EUCLIDEAN_LOGIC</div>
+<p class="text-[12px] text-on-surface-variant font-code-block">Mathematical precision in vector space.</p>
+</div>
+</div>
+</section>
+<!-- TEAM INTRODUCTION SECTION -->
+<section class="space-y-stack-md">
+<div class="flex items-center gap-4">
+<h3 class="font-headline-md text-headline-md text-primary uppercase">CORE_CONTRIBUTORS</h3>
+<div class="h-[1px] flex-1 bg-muted/30"></div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-gutter">
+<!-- Member 1 -->
+<div class="group bg-surface-charcoal border border-muted p-gutter rounded-xl hover:border-primary/50 transition-all duration-300 flex flex-col items-center text-center">
+<div class="w-20 h-20 rounded-full border-2 border-muted group-hover:border-primary transition-colors p-1 mb-4 overflow-hidden bg-background">
+<img alt="Narido, Christian Paul C." class="w-full h-full grayscale group-hover:grayscale-0 transition-all object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAk42kPOgmxhP-2cm9l4XXzi4uLWMaY0c5bufXTlg04GEGmMzNU_oSh5c5lQKaq2_6nUSD4f0sxjBXxsTgZvzH2LQ_X-W2gDZS0ZzIsLZfO_hXgOt0l6coHXxQescfFuv5VCasoZM3TxCC_UyMOYg-JGtLS6dy9IZUKRGu-Mh0EOsFwoky4bQTXNz8sWXzTgwrHGsbliPBt4E-FUzxbMr7WEXV9rtD6vwiaSRCs4p5tAfhnpK7R1T4aTTverfmHTMqFp0vgbD5e174">
+</div>
+<div class="font-label-caps text-[10px] text-primary/60 mb-2">DEVELOPER_01</div>
+<div class="font-headline-md text-[20px] text-on-surface leading-tight min-h-[3rem] flex items-center justify-center">Narido, Christian Paul C.</div>
+<div class="mt-4 text-[10px] font-code-block text-on-surface-variant/60 uppercase">Project Manager/Leader</div>
+</div>
+<!-- Member 2 -->
+<div class="group bg-surface-charcoal border border-muted p-gutter rounded-xl hover:border-primary/50 transition-all duration-300 flex flex-col items-center text-center">
+<div class="w-20 h-20 rounded-full border-2 border-muted group-hover:border-primary transition-colors p-1 mb-4 overflow-hidden bg-background">
+<img alt="Motea, Bernard Joseph" class="w-full h-full grayscale group-hover:grayscale-0 transition-all object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArXhtYXcLl9-idhe0wzH_c14G1ouFqLc51_FIPdRSAJ0z7llk_7bOvnMYeOjznmHn6J_gM4dSoPtodgrfyzVg81MQTEBeOI7U4ZJBLeEkV5O6bJdM_sVfTUwOIpybIFSVkU4X7Ic3eyiWTS75SfI4krKyxynnDDObBEVFTfALcTYv8veojZmJ_GlArDJAQmZFQ6_pAWf_7WNXDCfR35bFNCbssR3IbjPviDUzyfsTgBZC7iSv15YvesqevR-TIS4gldaNsy0TPTAA">
+</div>
+<div class="font-label-caps text-[10px] text-primary/60 mb-2">DEVELOPER_02</div>
+<div class="font-headline-md text-[20px] text-on-surface leading-tight min-h-[3rem] flex items-center justify-center">Motea, Bernard Joseph</div>
+<div class="mt-4 text-[10px] font-code-block text-on-surface-variant/60 uppercase">UI/UX DESIGNER</div>
+</div>
+<!-- Member 3 -->
+<div class="group bg-surface-charcoal border border-muted p-gutter rounded-xl hover:border-primary/50 transition-all duration-300 flex flex-col items-center text-center">
+<div class="w-20 h-20 rounded-full border-2 border-muted group-hover:border-primary transition-colors p-1 mb-4 overflow-hidden bg-background">
+<img alt="Camarillo, Troy Michael" class="w-full h-full grayscale group-hover:grayscale-0 transition-all object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2voRLIwABcRpnS2PMiXL-xapBJSbs0-EI3601f4zOGlgU6o3PjeFvQRzP_PVA56IeJD0DJX2p6p9aiiTUrPrAyD5StwHGoawUkW2jPSs3gwVWuIssCNm-HmZCZMte5_GrkGzx5oXHSXZ6YCU7YwRCXMQIuKdCcy7ZrZGOfgXHae0sZ-FhaxgssPqZQfu6wTDsDmtMl8xkZNkZvzQg5jjUzU3F8K9yFaMJnKF0dinXbtkBThmeWXIIoNSh9bCBKd8EqVAUIm9r4qs">
+</div>
+<div class="font-label-caps text-[10px] text-primary/60 mb-2">DEVELOPER_03</div>
+<div class="font-headline-md text-[20px] text-on-surface leading-tight min-h-[3rem] flex items-center justify-center">Camarillo, Troy Michael</div>
+<div class="mt-4 text-[10px] font-code-block text-on-surface-variant/60 uppercase">BACKEND PROGRAMMER</div>
+</div>
+<!-- Member 4 -->
+<div class="group bg-surface-charcoal border border-muted p-gutter rounded-xl hover:border-primary/50 transition-all duration-300 flex flex-col items-center text-center">
+<div class="w-20 h-20 rounded-full border-2 border-muted group-hover:border-primary transition-colors p-1 mb-4 overflow-hidden bg-background">
+<img alt="Lamadora, Christian Jay" class="w-full h-full grayscale group-hover:grayscale-0 transition-all object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCt0L7dhXWx3L_-HJf2MJPbXLR-8LsSN3eSZHxS3iIcEVBtzyOO6PgSsbISAbPhsw0iCDQ8TzgmKiky2APS5_UTgiPoeiZQVBGironASo-ZOmQIpnbDjUIn_s36UXZhi1-3SVLt_QMXZqAbKTYsNWHZoOFJ7NetgW9v0tzIYgDhyVkxAB_eKumrCHfZNrwfwcswA4DkG8YzCtS_40yDOa5nLBHM-Gr_rczG6JisuMzAFShevSahkNUQ87HWJXdyYsgwAjgUG_BbZAk">
+</div>
+<div class="font-label-caps text-[10px] text-primary/60 mb-2">DEVELOPER_04</div>
+<div class="font-headline-md text-[20px] text-on-surface leading-tight min-h-[3rem] flex items-center justify-center">Lamadora, Christian Jay</div>
+<div class="mt-4 text-[10px] font-code-block text-on-surface-variant/60 uppercase">FRONTEND PROGRAMMER</div>
+</div>
+<!-- Member 5 -->
+<div class="group bg-surface-charcoal border border-muted p-gutter rounded-xl hover:border-primary/50 transition-all duration-300 flex flex-col items-center text-center">
+<div class="w-20 h-20 rounded-full border-2 border-muted group-hover:border-primary transition-colors p-1 mb-4 overflow-hidden bg-background">
+<img alt="Rodriguez, Glenn" class="w-full h-full grayscale group-hover:grayscale-0 transition-all object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtP9uU85rUeT9v7-vR6Zl8Xo0lP9mU5tY7x6z5mX5p_v9u8t7r6e5w4q3a2s1d0f9g8h7j6k5l4m3n2b1v0c9x8z7q6w5e4r3t2y1u0i9o8p7">
+</div>
+<div class="font-label-caps text-[10px] text-primary/60 mb-2">DEVELOPER_05</div>
+<div class="font-headline-md text-[20px] text-on-surface leading-tight min-h-[3rem] flex items-center justify-center">Rodriguez, Glenn</div>
+<div class="mt-4 text-[10px] font-code-block text-on-surface-variant/60 uppercase">FRONTEND PROGRAMMER</div>
+</div>
+</div>
+</section>
+</div>
+<!-- HOME CONTENT END -->
+<!-- TERMINAL SECTION -->
+<section class="bg-background-deep border border-muted rounded-xl overflow-hidden shadow-2xl">
+    <div class="max-w-[1200px] mx-auto px-gutter py-stack-lg">
+        <div class="p-stack-md">
+            <div class="font-label-caps text-label-caps text-primary/60 mb-2 uppercase">CASE STUDY VIEW</div>
+            <div id="case-content" class="bg-surface-charcoal border border-muted p-6 rounded-md min-h-[240px] text-on-surface-variant">
+                Select a case study from the sidebar to view it here. The content will be loaded using a small MVC controller.
+            </div>
+        </div>
+    </div>
+</section>
+</div>
+</main>
+<!-- FOOTER -->
+<footer class="ml-64 bg-surface-container-lowest border-t border-muted py-stack-md px-gutter flex flex-col md:flex-row justify-between items-center gap-stack-sm text-on-tertiary-fixed-variant">
+<div class="font-label-caps text-label-caps text-secondary-fixed tracking-widest">
+            © 2024 MOT.AI// ALL_RIGHTS_RESERVED
+        </div>
+<div class="flex gap-stack-lg">
+<a class="font-label-caps text-label-caps hover:text-primary transition-colors" href="#">Documentation</a>
+<a class="font-label-caps text-label-caps hover:text-primary transition-colors" href="#">Changelog</a>
+<a class="font-label-caps text-label-caps hover:text-primary transition-colors" href="#">Security</a>
+<a class="font-label-caps text-label-caps hover:text-primary transition-colors" href="#">Status</a>
+</div>
+</footer>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("MOT.AI // SYSTEM_BOOT_SEQUENCE_COMPLETE");
+            
+            // Handle splash screen timing
+            setTimeout(() => {
+                const splash = document.getElementById('splash');
+                if (splash) splash.classList.add('pointer-events-none');
+            }, 3200);
+
+            // Button hover effects logic
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.addEventListener('mouseenter', () => {
+                    btn.classList.add('transition-all', 'duration-200');
+                });
+            });
+        });
+    </script>
+    <script src="assets/js/app.js"></script>
+
+
+</body></html>
