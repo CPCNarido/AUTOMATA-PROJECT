@@ -115,12 +115,12 @@
         .scanline {
             width: 100%;
             height: 2px;
-            background: rgba(0, 219, 233, 0.1);
+            background: rgba(255, 255, 255, 0.02);
             position: fixed;
             top: 0;
             left: 0;
             pointer-events: none;
-            z-index: 100;
+            z-index: 0;
             animation: scanline 8s linear infinite;
         }
         @keyframes scanline {
@@ -152,14 +152,28 @@
             transform: translateX(-10px);
             animation: slideIn 0.3s forwards;
         }
+        .code-viewer, .code-viewer pre {
+            position: relative;
+            z-index: 20;
+        }
+        /* Force readable colors for code tokens (avoid black-on-black) */
+        .code-viewer pre {
+            color: #dce4e5 !important;
+            background: transparent !important;
+        }
+        .code-viewer .text-code-keyword { color: #FF79C6 !important; }
+        .code-viewer .text-code-comment { color: #6272A4 !important; opacity: 1 !important; }
+        .code-viewer .text-code-string { color: #CCFF00 !important; }
+        .code-viewer .text-primary { color: #dbfcff !important; }
+        .code-viewer .text-secondary-fixed { color: #c3f400 !important; }
         @keyframes slideIn {
             to { opacity: 1; transform: translateX(0); }
         }
     </style>
-</div>
-</main>
-</div>
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-stack-lg">
+</head>
+<body>
+<div class="scanline"></div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-stack-lg relative z-10">
 <!-- Left Column: Input & Results (Bento Layout) -->
 <div class="lg:col-span-7 flex flex-col gap-stack-lg">
 <!-- Parameter Input Card -->
@@ -241,7 +255,7 @@
 <span class="font-label-caps text-[10px]">COPY</span>
 </button>
 </div>
-<div class="p-6 font-code-block text-code-block overflow-x-auto overflow-y-auto max-h-[700px]">
+<div class="p-6 font-code-block text-code-block overflow-x-auto overflow-y-auto max-h-[700px] code-viewer">
 <pre class="whitespace-pre"><span class="text-code-keyword">public class</span> EuclideanAlgorithm {
     <span class="text-code-comment">// Euclidean method to find GCD of two numbers</span>
     <span class="text-code-keyword">public static int</span> <span class="text-primary">findGCD</span>(<span class="text-code-keyword">int</span> a, <span class="text-code-keyword">int</span> b) {
