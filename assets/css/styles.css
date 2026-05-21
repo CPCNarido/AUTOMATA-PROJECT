@@ -1,7 +1,33 @@
 /* Minimal styles for case study viewer */
 .case-iframe { width: 100%; height: 640px; border: 0; border-radius: 6px; }
 .case-link.active { color: #00dbe9; font-weight: 700; }
-#case-content { min-height: 240px; }
+#case-content { width: 100%; min-height: 700px; }
+
+/* Case mode uses the full available shell space */
+.page-shell.case-mode {
+  padding: 0;
+  margin: 0;
+  gap: 0;
+  height: calc(100vh - 4rem);
+  min-height: calc(100vh - 4rem);
+  display: flex;
+  flex-direction: column;
+}
+.page-shell.case-mode #home-content {
+  display: none !important;
+}
+.page-shell.case-mode #case-content {
+  display: block !important;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* Let the iframe consume the full vertical space in case mode */
+.page-shell.case-mode .case-iframe {
+  height: calc(100vh - 4rem);
+  min-height: calc(100vh - 4rem);
+  border-radius: 0;
+}
 
 /* Loading state for case content */
 #case-content.loading { position: relative; opacity: 0.85; }
@@ -9,5 +35,5 @@
 
 /* A small responsive tweak for small screens */
 @media (max-width: 768px) {
-  .case-iframe { height: 480px; }
+  .case-iframe { height: 700px; }
 }

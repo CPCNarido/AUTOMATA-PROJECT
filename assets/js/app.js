@@ -16,8 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // restore footer and main scrolling when returning home
     const footer = document.querySelector('footer');
     const mainEl = document.querySelector('main');
+    const shell = document.querySelector('.page-shell');
     if (footer) footer.style.display = '';
     if (mainEl) mainEl.style.overflow = '';
+    if (shell) shell.classList.remove('case-mode');
     // restore global scrolling
     document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
@@ -55,8 +57,10 @@ document.addEventListener('DOMContentLoaded', () => {
       // hide global footer and prevent main from scrolling so iframe is the only scroller
       const footer = document.querySelector('footer');
       const mainEl = document.querySelector('main');
+      const shell = document.querySelector('.page-shell');
       if (footer) footer.style.display = 'none';
       if (mainEl) mainEl.style.overflow = 'hidden';
+      if (shell) shell.classList.add('case-mode');
       // also disable page-level scrolling (body/html) so iframe is the only vertical scroller
       document.documentElement.style.overflow = 'hidden';
       document.body.style.overflow = 'hidden';
