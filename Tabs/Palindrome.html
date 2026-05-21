@@ -132,6 +132,12 @@
             margin-bottom: 1rem;
         }
         .step-entry.active { border-left-color: #00dbe9; }
+        .code-viewer, .code-viewer pre { position: relative; z-index: 20; }
+        .code-viewer pre { color: #dce4e5; background: transparent; }
+        .code-viewer .text-code-keyword { color: #FF79C6; }
+        .code-viewer .text-code-comment { color: #6272A4; opacity: 1; }
+        .code-viewer .text-code-string { color: #CCFF00; }
+        .code-viewer .text-primary { color: #dbfcff; }
     </style>
 </head>
 <body class="bg-background text-on-background font-body-md selection:bg-primary/30 min-h-screen terminal-grid">
@@ -174,7 +180,7 @@
 <!-- Interaction Area -->
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
 <!-- Left: Input and Result -->
-<div class="lg:col-span-5 space-y-gutter">
+<div class="lg:col-span-4 space-y-gutter">
 <!-- Input Form -->
 <div class="bg-surface-charcoal border border-muted p-gutter relative overflow-hidden">
 <div class="flex justify-between items-center mb-stack-md border-b border-muted pb-stack-sm">
@@ -201,10 +207,13 @@
 </div>
 </div>
 </div>
-<!-- Right: Metrics and Visualization -->
-<div class="lg:col-span-7 space-y-gutter">
-<div class="bg-surface-charcoal border border-muted p-gutter h-full">
-<h4 class="font-label-caps text-label-caps text-primary mb-stack-md border-b border-muted pb-stack-sm">METRICS_LOG</h4>
+<!-- Middle: Metrics and Visualization -->
+<div id="metrics-column" class="lg:col-span-4 space-y-gutter">
+<div class="bg-surface-charcoal border border-muted p-gutter h-full" id="metrics-panel">
+<div class="flex items-center justify-between mb-stack-md border-b border-muted pb-stack-sm">
+    <h4 class="font-label-caps text-label-caps text-primary">METRICS_LOG</h4>
+    <button id="toggle-metrics-code" class="text-on-surface-variant/60 text-[12px] font-label-caps px-2 py-1 rounded">SHOW CODE</button>
+</div>
 <div class="space-y-4 font-code-block">
 <div class="flex justify-between border-b border-muted/20 pb-2">
 <span class="text-on-surface-variant/60 text-[12px]">ALGORITHM_STRATEGY</span>
@@ -231,9 +240,173 @@
 </div>
 </div>
 </div>
-</div>
-</div>
-</div>
-<!-- Sidebar Source Code Panel removed -->
+    </div>
+    <!-- Inline Code Panel (right column) -->
+    <div class="lg:col-span-4 hidden" id="code-column">
+        <div class="bg-background-deep border border-muted p-4 h-full">
+            <div class="flex justify-between items-center mb-3 border-b border-muted pb-2">
+                <div class="flex items-center gap-3">
+                    <div class="terminal-header-dots"><span class="bg-[#FF5F56]"></span><span class="bg-[#FFBD2E]"></span><span class="bg-[#27C93F]"></span></div>
+                    <span class="font-label-caps text-[11px] text-on-surface-variant">PalindromeChecker.java</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="copy-code" class="text-secondary-fixed hover:bg-secondary-fixed/10 px-2 py-1 rounded transition-colors flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm">content_copy</span>
+                        <span class="font-label-caps text-[10px]">COPY</span>
+                    </button>
+                    <button id="toggle-code-metrics" class="text-on-surface-variant/60 text-[12px] font-label-caps px-2 py-1 rounded">SHOW METRICS</button>
+                </div>
+            </div>
+            <div class="font-code-block text-code-block overflow-auto code-viewer h-[520px] p-2 bg-transparent">
+                <pre id="palindrome-code" class="whitespace-pre">import java.util.Scanner;
+
+public class PalindromeChecker {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter a string: ");
+        String input = scanner.nextLine();
+
+        System.out.println("String entered: " + input);
+
+        int len = input.length();
+        System.out.println("Length of the string: " + len);
+
+        boolean isPalindrome = true;
+        int left = 0;
+        int right = len - 1;
+
+        while (left < right) {
+            if (input.charAt(left) != input.charAt(right)) {
+                isPalindrome = false;
+                break;
+            }
+            left++;
+            right--;
+        }
+
+        if (isPalindrome) {
+            System.out.println("Result: The string IS a palindrome.");
+        } else {
+            System.out.println("Result: The string is NOT a palindrome.");
+        }
+        
+        scanner.close();
+    }
+}
+</pre>
+            </div>
+        </div>
+    </div>
+<script>
+    document.getElementById('copy-code')?.addEventListener('click', function() {
+        const codeEl = document.getElementById('palindrome-code');
+        if (!codeEl) return;
+        const text = codeEl.dataset.original || codeEl.innerText;
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(text).then(() => {
+                this.innerText = 'COPIED';
+                setTimeout(() => this.innerText = 'COPY', 1200);
+            });
+        } else {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            this.innerText = 'COPIED';
+            setTimeout(() => this.innerText = 'COPY', 1200);
+        }
+    });
+
+    // Basic Java syntax highlighter (small, client-side)
+    function highlightJava(preEl) {
+        if (!preEl) return;
+        const raw = preEl.textContent;
+        preEl.dataset.original = raw;
+        // Escape HTML
+        let code = raw.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+        const placeholders = [];
+        // Strings
+        code = code.replace(/("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/g, function(m) {
+            placeholders.push('<span class="text-code-string">' + m + '</span>');
+            return '__P' + (placeholders.length-1) + '__';
+        });
+        // Line comments
+        code = code.replace(/(\/\/.*?$)/gm, function(m) {
+            placeholders.push('<span class="text-code-comment">' + m + '</span>');
+            return '__P' + (placeholders.length-1) + '__';
+        });
+        // Block comments
+        code = code.replace(/(\/\*[\s\S]*?\*\/)/g, function(m) {
+            placeholders.push('<span class="text-code-comment">' + m + '</span>');
+            return '__P' + (placeholders.length-1) + '__';
+        });
+
+        // Keywords
+        const keywords = ['public','class','static','void','int','boolean','if','else','while','return','new','import','package','break','for','do','switch','case','default','try','catch','finally','throw','throws'];
+        const kwRegex = new RegExp('\\b(' + keywords.join('|') + ')\\b', 'g');
+        code = code.replace(kwRegex, '<span class="text-code-keyword">$1</span>');
+
+        // Restore placeholders
+        code = code.replace(/__P(\d+)__/g, function(_, idx) { return placeholders[Number(idx)]; });
+
+        preEl.innerHTML = code;
+    }
+
+    // Run highlighter on load
+    document.addEventListener('DOMContentLoaded', function() {
+        const pre = document.getElementById('palindrome-code');
+        highlightJava(pre);
+
+        // Toggle button behavior: expand visible panel to occupy middle+right (8 cols)
+        const toggleBtn = document.getElementById('toggle-metrics-code');
+        const toggleCodeBtn = document.getElementById('toggle-code-metrics');
+        const metricsCol = document.getElementById('metrics-column');
+        const codeCol = document.getElementById('code-column');
+
+        function showMetrics() {
+            // hide code
+            codeCol.classList.add('hidden');
+            codeCol.classList.remove('lg:col-span-8');
+            if (!codeCol.classList.contains('lg:col-span-4')) codeCol.classList.add('lg:col-span-4');
+
+            // show metrics expanded
+            metricsCol.classList.remove('hidden');
+            metricsCol.classList.remove('lg:col-span-4');
+            metricsCol.classList.add('lg:col-span-8');
+
+            // update labels
+            if (toggleBtn) toggleBtn.innerText = 'SHOW CODE';
+            if (toggleCodeBtn) toggleCodeBtn.innerText = 'SHOW METRICS';
+        }
+
+        function showCode() {
+            // show code expanded
+            codeCol.classList.remove('hidden');
+            codeCol.classList.remove('lg:col-span-4');
+            codeCol.classList.add('lg:col-span-8');
+
+            // hide metrics
+            metricsCol.classList.add('hidden');
+            metricsCol.classList.remove('lg:col-span-8');
+            if (!metricsCol.classList.contains('lg:col-span-4')) metricsCol.classList.add('lg:col-span-4');
+
+            // update labels
+            if (toggleBtn) toggleBtn.innerText = 'SHOW METRICS';
+            if (toggleCodeBtn) toggleCodeBtn.innerText = 'SHOW CODE';
+        }
+
+        if (toggleBtn) toggleBtn.addEventListener('click', function(){
+            // decide based on current state
+            if (codeCol.classList.contains('hidden')) showCode(); else showMetrics();
+        });
+        if (toggleCodeBtn) toggleCodeBtn.addEventListener('click', function(){
+            if (codeCol.classList.contains('hidden')) showCode(); else showMetrics();
+        });
+    });
+</script>
 <script src="../logic/palindrome.js"></script>
 </body></html>
