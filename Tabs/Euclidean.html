@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 
 <html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>MOT.AI // EUCLIDEAN_ENGINE</title>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>MOT.AI // EUCLIDEAN_ALGORITHM</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700;800&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -157,18 +156,8 @@
             to { opacity: 1; transform: translateX(0); }
         }
     </style>
-</head>
-<body class="font-body-md text-on-surface">
-<div class="scanline"></div>
-<!-- Sidebar and topbar removed; shared by parent index.html -->
-<!-- Main Content -->
-<main class="flex-grow p-gutter max-w-container-max mx-auto w-full">
-<!-- Hero Intro -->
-<div class="mb-stack-lg">
-<h1 class="font-headline-xl text-headline-xl text-primary mb-2 uppercase tracking-tight">ALGORITHM TEST BENCH: EUCLIDEAN &amp; GCD</h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
-                    Calculate the Greatest Common Divisor and Least Common Multiple with step-by-step breakdowns using optimized Euclidean recursive logic.
-                </p>
+</div>
+</main>
 </div>
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-stack-lg">
 <!-- Left Column: Input & Results (Bento Layout) -->
@@ -291,16 +280,6 @@
 </div>
 </div>
 </main>
-<!-- Footer (from JSON) -->
-<footer class="flex flex-col md:flex-row justify-between items-center w-full py-stack-md px-gutter ml-64 max-w-[calc(100%-16rem)] gap-stack-sm border-t border-muted bg-surface-container-lowest mt-auto">
-<span class="font-label-caps text-label-caps text-secondary-fixed">© 2024 INDUSTRIAL_COMPUTE_LAB // ALL_RIGHTS_RESERVED</span>
-<div class="flex gap-6">
-<a class="font-label-caps text-label-caps text-on-tertiary-fixed-variant hover:text-primary transition-colors duration-200" href="#">Documentation</a>
-<a class="font-label-caps text-label-caps text-on-tertiary-fixed-variant hover:text-primary transition-colors duration-200" href="#">Changelog</a>
-<a class="font-label-caps text-label-caps text-on-tertiary-fixed-variant hover:text-primary transition-colors duration-200" href="#">Security</a>
-<a class="font-label-caps text-label-caps text-on-tertiary-fixed-variant hover:text-primary transition-colors duration-200" href="#">Status</a>
-</div>
-</footer>
 </div>
 <script>
         function runAlgorithm() {
@@ -359,4 +338,6 @@
         // Initialize on load
         window.onload = runAlgorithm;
     </script>
+    
+<script src="../logic/euclidean.js"></script>
 </body></html>

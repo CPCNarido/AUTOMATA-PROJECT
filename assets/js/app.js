@@ -7,9 +7,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function showHome() {
     if (home) home.style.display = '';
-    if (content) content.innerHTML = 'Select a case study from the sidebar to view it here. The content will be loaded using a small MVC controller.';
+    if (content) {
+      content.innerHTML = '';
+      content.style.display = 'none';
+    }
     // clear active link
     document.querySelectorAll('.case-link').forEach(l => l.classList.remove('active'));
+    // restore footer and main scrolling when returning home
+    const footer = document.querySelector('footer');
+    const mainEl = document.querySelector('main');
+    if (footer) footer.style.display = '';
+    if (mainEl) mainEl.style.overflow = '';
+    // restore global scrolling
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
     history.pushState({}, '', '#');
   }
 
@@ -27,14 +38,44 @@ document.addEventListener('DOMContentLoaded', () => {
     // create or reuse iframe
     let iframe = content.querySelector('iframe.case-iframe');
     if (!iframe) {
+      content.style.display = 'block';
       iframe = document.createElement('iframe');
       iframe.className = 'case-iframe';
       iframe.style.width = '100%';
       iframe.style.border = '0';
       iframe.style.borderRadius = '6px';
+      // let iframe be the only scroller: compute available height and allow internal scrolling
+      iframe.style.overflow = 'auto';
       iframe.style.minHeight = '480px';
       content.innerHTML = '';
       content.appendChild(iframe);
+
+      // ensure parent container doesn't scroll for the case-content area
+      content.style.overflow = 'hidden';
+      // hide global footer and prevent main from scrolling so iframe is the only scroller
+      const footer = document.querySelector('footer');
+      const mainEl = document.querySelector('main');
+      if (footer) footer.style.display = 'none';
+      if (mainEl) mainEl.style.overflow = 'hidden';
+      // also disable page-level scrolling (body/html) so iframe is the only vertical scroller
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+
+      // function to compute height available to iframe (viewport - content top - small margin)
+      function computeIframeHeight() {
+        const rect = content.getBoundingClientRect();
+        const margin = 24; // allow a bit of breathing room
+        const available = Math.max(320, window.innerHeight - rect.top - margin);
+        return available;
+      }
+
+      // set initial height
+      iframe.style.height = computeIframeHeight() + 'px';
+
+      // update on window resize
+      window.addEventListener('resize', () => {
+        iframe.style.height = computeIframeHeight() + 'px';
+      });
     }
     // show loader overlay
     content.classList.add('loading');
@@ -55,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const loaderEl = content.querySelector('.loader');
       if (loaderEl) loaderEl.remove();
     };
+
     if (push) history.pushState({ path }, '', '#' + path.split('/').pop().split('.')[0]);
   }
 

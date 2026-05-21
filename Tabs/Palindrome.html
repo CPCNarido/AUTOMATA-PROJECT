@@ -151,16 +151,12 @@
 <span class="">MODE: TWO_POINTER_ENGINE</span>
 </div>
 </div>
-<div class="flex items-center gap-gutter">
-<button class="px-3 py-1.5 border border-muted hover:border-primary text-label-caps text-[11px] font-label-caps transition-all flex items-center gap-2 bg-background-deep" onclick="toggleCode()">
-<span class="material-symbols-outlined text-sm">code</span>
-<span id="code-toggle-text" class="">SHOW_SOURCE</span>
-</button>
-<div class="flex items-center gap-2 px-3 py-1 bg-background-deep border border-muted rounded">
-<div class="w-2 h-2 rounded-full bg-secondary-fixed animate-pulse"></div>
-<span class="text-[10px] font-label-caps text-secondary-fixed">ALGO_ACTIVE</span>
-</div>
-</div>
+            <div class="flex items-center gap-gutter">
+                <div class="flex items-center gap-2 px-3 py-1 bg-background-deep border border-muted rounded">
+                    <div class="w-2 h-2 rounded-full bg-secondary-fixed animate-pulse"></div>
+                    <span class="text-[10px] font-label-caps text-secondary-fixed">ALGO_ACTIVE</span>
+                </div>
+            </div>
 </header>
 <!-- Main Content -->
 <main class="pt-16 min-h-screen flex">
@@ -238,137 +234,6 @@
 </div>
 </div>
 </div>
-<!-- Sidebar Source Code Panel -->
-<aside class="w-0 overflow-hidden border-l border-muted bg-surface-container-lowest transition-all duration-500 ease-in-out flex flex-col" id="code-panel">
-<div class="p-4 border-b border-muted flex justify-between items-center bg-surface-charcoal">
-<span class="font-label-caps text-[11px] text-primary flex items-center gap-2">
-<span class="material-symbols-outlined text-sm">description</span>
-                    PalindromeChecker.java
-                </span>
-<button class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1" onclick="copyCode()">
-<span class="material-symbols-outlined text-sm" id="copy-icon">content_copy</span>
-<span class="text-[10px] font-label-caps">COPY</span>
-</button>
-</div>
-<div class="flex-1 p-6 overflow-auto code-container bg-background-deep">
-<pre class="font-code-block text-code-block leading-relaxed"><code id="code-content"><span class="text-code-keyword">public class</span> <span class="text-primary">PalindromeChecker</span> {
-    <span class="text-code-comment">// Evaluates if a string reads same forward and backward</span>
-    <span class="text-code-keyword">public boolean</span> <span class="text-primary">isPalindrome</span>(String s) {
-        <span class="text-code-keyword">int</span> left = <span class="text-code-string">0</span>;
-        <span class="text-code-keyword">int</span> right = s.length() - <span class="text-code-string">1</span>;
-
-        <span class="text-code-keyword">while</span> (left &lt; right) {
-            <span class="text-code-keyword">if</span> (s.charAt(left) != s.charAt(right)) {
-                <span class="text-code-keyword">return false</span>;
-            }
-            left++;
-            right--;
-        }
-        <span class="text-code-keyword">return true</span>;
-    }
-}</code></pre>
-</div>
-<div class="bg-surface-charcoal border-t border-muted p-stack-md flex justify-between items-center text-[11px] font-label-caps text-on-surface-variant/60">
-<div class="flex gap-4">
-<span class="">LINES: 18</span>
-<span class="">ENCODING: UTF-8</span>
-</div>
-<span class="text-primary">STATUS: READ_ONLY</span>
-</div>
-</aside>
-</main>
-<!-- Footer -->
-<footer class="bg-surface-container-lowest border-t border-muted py-stack-md px-gutter flex flex-col md:flex-row justify-between items-center gap-stack-sm text-on-tertiary-fixed-variant">
-<div class="flex flex-col gap-1">
-<span class="font-label-caps text-label-caps text-secondary-fixed">INDUSTRIAL_COMPUTE_LAB // RUNTIME_MONITOR</span>
-<span class="text-[10px] text-on-surface-variant/50 font-label-caps uppercase">© 2024 // ALL_RIGHTS_RESERVED // MOT.AI INFRASTRUCTURE</span>
-</div>
-<div class="flex gap-gutter">
-<div class="flex items-center gap-4">
-<span class="font-label-caps text-[11px]">API_STATUS_OK</span>
-<span class="text-primary-fixed-dim font-label-caps text-[11px]">CPU_LOAD: 02%</span>
-</div>
-<div class="h-4 w-[1px] bg-muted/20"></div>
-<a class="font-label-caps text-label-caps hover:text-primary transition-colors text-[11px]" href="#">Documentation</a>
-<a class="font-label-caps text-label-caps hover:text-primary transition-colors text-[11px]" href="#">Changelog</a>
-</div>
-</footer>
-<script>
-        let isCodeVisible = false;
-
-        function toggleCode() {
-            const panel = document.getElementById('code-panel');
-            const toggleText = document.getElementById('code-toggle-text');
-            isCodeVisible = !isCodeVisible;
-            
-            if (isCodeVisible) {
-                panel.style.width = '40%';
-                toggleText.innerText = 'HIDE_SOURCE';
-            } else {
-                panel.style.width = '0';
-                toggleText.innerText = 'SHOW_SOURCE';
-            }
-        }
-
-        function checkInput(val) {
-            const statusText = document.getElementById('result-status-text');
-            const statusIcon = document.getElementById('result-status-icon');
-            const resultCard = document.getElementById('result-card');
-            const charCount = document.getElementById('char-count').lastElementChild;
-            const trace = document.getElementById('execution-trace');
-
-            charCount.innerText = val.length + '_BYTES';
-
-            if (!val.trim()) {
-                statusText.innerText = 'NO_INPUT_DETECTED';
-                statusIcon.innerText = 'pending';
-                statusText.className = 'font-headline-md text-headline-md opacity-40 uppercase';
-                statusIcon.className = 'text-5xl material-symbols-outlined mb-2 opacity-20';
-                resultCard.style.borderColor = '#2A2D35';
-                trace.innerHTML = '<div class="opacity-30">Waiting for data packet sequence...</div>';
-                return;
-            }
-            
-            const clean = val.toLowerCase().replace(/[^a-z0-9]/g, '');
-            if (clean.length === 0) {
-                statusText.innerText = 'WAITING_FOR_VALID_CHARS...';
-                return;
-            }
-
-            const isPalindrome = clean === clean.split('').reverse().join('');
-            
-            // Visualization trace
-            let traceHtml = `<div class="text-secondary-fixed mb-1">[ OK ] Sequence received: "${val.substring(0, 20)}${val.length > 20 ? '...' : ''}"</div>`;
-            traceHtml += `<div class="text-primary mb-1">[ TRACE ] Pointer comparison starting...</div>`;
-            
-            if (isPalindrome) {
-                statusText.innerText = 'SEQUENCE_VALID';
-                statusIcon.innerText = 'check_circle';
-                statusText.className = 'font-headline-md text-headline-md text-secondary-fixed tracking-tight';
-                statusIcon.className = 'text-5xl material-symbols-outlined mb-2 text-secondary-fixed animate-pulse';
-                resultCard.style.borderColor = 'rgba(195, 244, 0, 0.4)';
-                traceHtml += `<div class="text-secondary-fixed">[ DONE ] Symmetry confirmed at O(n/2) steps.</div>`;
-            } else {
-                statusText.innerText = 'INVALID_SEQUENCE';
-                statusIcon.innerText = 'error';
-                statusText.className = 'font-headline-md text-headline-md text-error tracking-tight';
-                statusIcon.className = 'text-5xl material-symbols-outlined mb-2 text-error';
-                resultCard.style.borderColor = 'rgba(255, 180, 171, 0.4)';
-                traceHtml += `<div class="text-error">[ FAIL ] Mismatch detected. Exiting loop.</div>`;
-            }
-            trace.innerHTML = traceHtml;
-        }
-
-        function copyCode() {
-            const code = document.getElementById('code-content').innerText;
-            navigator.clipboard.writeText(code).then(() => {
-                const icon = document.getElementById('copy-icon');
-                const original = icon.innerText;
-                icon.innerText = 'done';
-                setTimeout(() => { icon.innerText = original; }, 2000);
-            });
-        }
-    </script>
-
-
+<!-- Sidebar Source Code Panel removed -->
+<script src="../logic/palindrome.js"></script>
 </body></html>

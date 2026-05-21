@@ -104,6 +104,9 @@
             },
         }
     </script>
+</script>
+</body></html>
+
 <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -271,132 +274,5 @@
 </div>
 </div>
 </main>
-<!-- Footer Shell (Updated per SCREEN_3) -->
-<footer class="ml-64 max-w-[calc(100%-16rem)] flex flex-col md:flex-row justify-between items-center w-full py-stack-md px-gutter bg-surface-container-lowest border-t border-muted gap-stack-sm mt-stack-lg">
-<div class="flex flex-col gap-1">
-<span class="font-label-caps text-label-caps text-secondary-fixed">INDUSTRIAL_COMPUTE_LAB</span>
-<span class="text-[10px] text-on-surface-variant/50 font-label-caps uppercase">© 2024 // ALL_RIGHTS_RESERVED // MOT.AI INFRASTRUCTURE</span>
-</div>
-<div class="flex gap-gutter">
-<a class="text-on-tertiary-fixed-variant hover:text-secondary-fixed transition-colors font-label-caps text-[11px]" href="#">Documentation</a>
-<a class="text-on-tertiary-fixed-variant hover:text-secondary-fixed transition-colors font-label-caps text-[11px]" href="#">Changelog</a>
-<a class="text-on-tertiary-fixed-variant hover:text-secondary-fixed transition-colors font-label-caps text-[11px]" href="#">Security</a>
-<a class="text-on-tertiary-fixed-variant hover:text-secondary-fixed transition-colors font-label-caps text-[11px]" href="#">Status</a>
-</div>
-</footer>
-<script>
-        const codeBlocks = {
-            division: `<span class="text-code-keyword">public class</span> <span class="text-primary">DivisionLogic</span> {
-    <span class="text-code-comment">// Implements the Euclidean Division Theorem</span>
-    <span class="text-code-keyword">public static</span> Result <span class="text-primary">execute</span>(<span class="text-code-keyword">int</span> a, <span class="text-code-keyword">int</span> d) {
-        <span class="text-code-keyword">if</span> (d == <span class="text-code-string">0</span>) <span class="text-code-keyword">throw new</span> <span class="text-error">ArithmeticException</span>();
-        
-        <span class="text-code-keyword">int</span> q = a / d;
-        <span class="text-code-keyword">int</span> r = a % d;
-
-        <span class="text-code-keyword">if</span> (r &lt; <span class="text-code-string">0</span>) {
-            r += Math.abs(d);
-            q = (a - r) / d;
-        }
-
-        <span class="text-code-keyword">return new</span> <span class="text-primary">Result</span>(q, r);
-    }
-}`,
-            euclidean: `<span class="text-code-keyword">public class</span> <span class="text-primary">EuclideanLogic</span> {
-    <span class="text-code-comment">// Implements the Euclidean Algorithm for GCD</span>
-    <span class="text-code-keyword">public static int</span> <span class="text-primary">gcd</span>(<span class="text-code-keyword">int</span> a, <span class="text-code-keyword">int</span> b) {
-        a = Math.abs(a);
-        b = Math.abs(b);
-        
-        <span class="text-code-keyword">while</span> (b != <span class="text-code-string">0</span>) {
-            <span class="text-code-keyword">int</span> temp = b;
-            b = a % b;
-            a = temp;
-        }
-        <span class="text-code-keyword">return</span> a;
-    }
-}`
-        };
-
-        const tabDiv = document.getElementById('tabDiv');
-        const tabEuc = document.getElementById('tabEuc');
-        const codeDisplay = document.getElementById('codeDisplay');
-        const runBtn = document.getElementById('runBtn');
-        const breakdownContainer = document.getElementById('breakdownContainer');
-        const inputA = document.getElementById('inputA');
-        const inputB = document.getElementById('inputB');
-
-        tabDiv.addEventListener('click', () => {
-            codeDisplay.innerHTML = codeBlocks.division;
-            tabDiv.className = 'font-label-caps text-label-caps text-primary border-b border-primary pb-0.5';
-            tabEuc.className = 'font-label-caps text-label-caps text-on-surface-variant/70 hover:text-primary transition-colors';
-        });
-
-        tabEuc.addEventListener('click', () => {
-            codeDisplay.innerHTML = codeBlocks.euclidean;
-            tabEuc.className = 'font-label-caps text-label-caps text-primary border-b border-primary pb-0.5';
-            tabDiv.className = 'font-label-caps text-label-caps text-on-surface-variant/70 hover:text-primary transition-colors';
-        });
-
-        runBtn.addEventListener('click', () => {
-            let a = parseInt(inputA.value);
-            let b = parseInt(inputB.value);
-            
-            if (isNaN(a) || isNaN(b) || b === 0) {
-                alert("Please enter valid integers. B cannot be zero.");
-                return;
-            }
-
-            breakdownContainer.innerHTML = '';
-            let currentA = Math.abs(a);
-            let currentB = Math.abs(b);
-            let step = 1;
-
-            while (currentB !== 0) {
-                let q = Math.floor(currentA / currentB);
-                let r = currentA % currentB;
-                
-                const stepDiv = document.createElement('div');
-                stepDiv.className = 'step-entry opacity-0 translate-x-4 transition-all duration-300';
-                stepDiv.innerHTML = `
-                    <div class="text-[10px] text-on-surface-variant font-label-caps mb-1">STEP_${step.toString().padStart(2, '0')}</div>
-                    <div><span class="text-primary">${currentA}</span> = (<span class="text-secondary-fixed">${currentB}</span> × <span class="text-primary">${q}</span>) + <span class="text-error">${r}</span></div>
-                `;
-                breakdownContainer.appendChild(stepDiv);
-                
-                // Animation delay
-                setTimeout(() => {
-                    stepDiv.classList.remove('opacity-0', 'translate-x-4');
-                }, step * 100);
-
-                currentA = currentB;
-                currentB = r;
-                step++;
-            }
-
-            const finalDiv = document.createElement('div');
-            finalDiv.className = 'mt-4 p-stack-md bg-secondary-fixed/5 border-l-2 border-secondary-fixed opacity-0 transition-all duration-500';
-            finalDiv.innerHTML = `
-                <div class="font-label-caps text-[10px] text-secondary-fixed mb-1">FINAL_RESULT</div>
-                <div class="flex justify-between">
-                    <span class="text-on-surface">GCD(${a}, ${b}):</span>
-                    <span class="text-secondary-fixed font-bold">${currentA}</span>
-                </div>
-            `;
-            breakdownContainer.appendChild(finalDiv);
-            setTimeout(() => finalDiv.classList.remove('opacity-0'), step * 100 + 100);
-        });
-
-        // Hover effects for code
-        document.addEventListener('mouseover', (e) => {
-            if (e.target.closest('pre')) {
-                e.target.closest('pre').style.color = '#fff';
-            }
-        });
-        document.addEventListener('mouseout', (e) => {
-            if (e.target.closest('pre')) {
-                e.target.closest('pre').style.color = '';
-            }
-        });
-    </script>
+<script src="../logic/division.js"></script>
 </body></html>

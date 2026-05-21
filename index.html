@@ -90,13 +90,13 @@
                     "body-lg": ["Inter"]
             },
             "fontSize": {
-                    "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
-                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
-                    "code-block": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
-                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
-                    "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500"}],
-                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    "headline-xl": ["32px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "headline-lg": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "code-block": ["13px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-md": ["14px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["18px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "label-caps": ["10px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                    "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
             }
           },
         },
@@ -133,7 +133,7 @@
     </style>
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
-<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<body class="bg-background text-on-background font-body-md overflow-hidden h-screen flex flex-col">
 <!-- SPLASH SCREEN -->
 <div class="fixed inset-0 z-[100] bg-background-deep flex flex-col items-center justify-center fade-out pointer-events-none" id="splash">
 <div class="relative group">
@@ -161,7 +161,7 @@
 </div>
 </div>
 </div>
-<nav class="flex-1 py-stack-md overflow-y-auto">
+<nav class="flex-1 py-stack-md overflow-y-auto overflow-x-hidden">
 <div class="px-gutter mb-stack-sm font-label-caps text-[10px] text-on-surface-variant/40 tracking-[0.2em]">ALGORITHM_SUITE</div>
 <a id="nav-home" class="flex items-center gap-3 text-primary bg-surface-variant/30 border-l-2 border-primary px-4 py-3 font-label-caps translate-x-1 transition-all duration-150 ease-in-out" href="#">
 <span class="material-symbols-outlined text-primary">terminal</span>Home</a>
@@ -211,37 +211,11 @@
 </div>
 </header>
 <!-- MAIN CONTENT CANVAS -->
-<main class="ml-64 pt-16 min-h-screen terminal-grid scanline-effect relative">
+<main class="ml-64 pt-16 flex-1 min-h-0 overflow-y-auto overflow-x-hidden terminal-grid scanline-effect relative">
 <div class="max-w-[1200px] mx-auto px-gutter py-stack-lg space-y-stack-lg">
 <!-- HOME CONTENT START -->
 <div id="home-content">
-<!-- HERO SECTION -->
-<section class="relative rounded-xl overflow-hidden border border-muted bg-surface-charcoal p-10 flex flex-col md:flex-row items-center gap-stack-lg shadow-[inset_0_0_50px_rgba(0,219,233,0.05)]">
-<div class="flex-1 space-y-stack-md text-left z-10">
-<div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 border border-primary/30 rounded-full">
-<span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span>
-<span class="font-label-caps text-[10px] text-primary tracking-widest uppercase">CORE_ALGORITHM_SUITE_V1</span>
-</div>
-<h2 class="font-headline-xl text-headline-xl text-primary leading-tight">MASTERING THE<br>LOGIC OF MOT.AI</h2>
-<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
-                        A cyber-industrial environment dedicated to the exploration and execution of complex computational patterns. From Palindrome detection to Euclidean geometry—redefined.
-                    </p>
-<div class="flex gap-4 pt-4">
-<button class="px-8 py-3 bg-primary-container text-on-primary font-label-caps text-label-caps rounded-lg hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] transition-all duration-300 transform active:scale-95">
-                            LAUNCH_TERMINAL
-                        </button>
-<button class="px-8 py-3 border border-primary text-primary font-label-caps text-label-caps rounded-lg hover:bg-primary/5 transition-all duration-300">
-                            _VIEW_DOCUMENTATION
-                        </button>
-</div>
-</div>
-<div class="flex-1 relative z-10">
-<div class="relative w-full aspect-square max-w-[400px]">
-<div class="absolute inset-0 bg-primary/20 blur-3xl rounded-full animate-pulse"></div>
-<img class="rounded-xl border border-muted shadow-2xl relative z-10 opacity-80 mix-blend-screen" data-alt="Futuristic cyber-industrial motherboard" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyFVFLXQIIM6-P9S-MdadecI3DKxNfKTEvMA2t7zjVGW-NeNCYiYGsoK8D_xuMlBO_W3oc7NgTtNikW4YwlWhjijiUHa0rsUYyiFmDKCEHj2lwCxRCO_iNQ1sNqut-WOhGdwLW8qpBIExeT8v5mHOCpL64jnwcFprN8b_J12EYk48h7VIwJ5E8RBnJ6Q40pRCcZI46_P0ke8GKt6Gz6rVUGf1dV_fWW_PHlFIvLCZbbtELRyMnU6mIDxaAQnpOoqR3Xc3uIY6gTNk">
-</div>
-</div>
-</section>
+
 <!-- PROFESSOR SECTION & ALGORITHM GRID -->
 <section class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
 <div class="md:col-span-1 p-stack-lg bg-surface-container-low border border-primary/40 rounded-xl relative group overflow-hidden">
@@ -249,7 +223,7 @@
 <span class="material-symbols-outlined text-primary text-4xl">school</span>
 </div>
 <div class="font-label-caps text-label-caps text-primary/60 mb-2 uppercase">Submitted to:</div>
-<h3 class="font-headline-lg text-headline-lg text-primary mb-4">[PROFESSOR_NAME_HERE]</h3>
+<h3 class="font-headline-lg text-headline-lg text-primary mb-4">Prof. Lester G. Diampoc</h3>
 <div class="space-y-2">
 <div class="flex justify-between text-[11px] font-code-block text-on-surface-variant">
 <span class="">DEPARTMENT</span>
@@ -282,15 +256,15 @@
 </section>
 <!-- TEAM INTRODUCTION SECTION -->
 <section class="space-y-stack-md">
-<div class="flex items-center gap-4">
-<h3 class="font-headline-md text-headline-md text-primary uppercase">CORE_CONTRIBUTORS</h3>
+<div class="flex items-center gap-4"headline>
+<h3 class="font-headline-md text--md text-primary uppercase mt-6">CORE_CONTRIBUTORS</h3>
 <div class="h-[1px] flex-1 bg-muted/30"></div>
 </div>
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-gutter">
 <!-- Member 1 -->
 <div class="group bg-surface-charcoal border border-muted p-gutter rounded-xl hover:border-primary/50 transition-all duration-300 flex flex-col items-center text-center">
 <div class="w-20 h-20 rounded-full border-2 border-muted group-hover:border-primary transition-colors p-1 mb-4 overflow-hidden bg-background">
-<img alt="Narido, Christian Paul C." class="w-full h-full grayscale group-hover:grayscale-0 transition-all object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAk42kPOgmxhP-2cm9l4XXzi4uLWMaY0c5bufXTlg04GEGmMzNU_oSh5c5lQKaq2_6nUSD4f0sxjBXxsTgZvzH2LQ_X-W2gDZS0ZzIsLZfO_hXgOt0l6coHXxQescfFuv5VCasoZM3TxCC_UyMOYg-JGtLS6dy9IZUKRGu-Mh0EOsFwoky4bQTXNz8sWXzTgwrHGsbliPBt4E-FUzxbMr7WEXV9rtD6vwiaSRCs4p5tAfhnpK7R1T4aTTverfmHTMqFp0vgbD5e174">
+<img alt="Narido, Christian Paul C." class="w-full h-full transition-all object-cover" src="assets/Images/Narido.jpg">
 </div>
 <div class="font-label-caps text-[10px] text-primary/60 mb-2">DEVELOPER_01</div>
 <div class="font-headline-md text-[20px] text-on-surface leading-tight min-h-[3rem] flex items-center justify-center">Narido, Christian Paul C.</div>
@@ -299,7 +273,7 @@
 <!-- Member 2 -->
 <div class="group bg-surface-charcoal border border-muted p-gutter rounded-xl hover:border-primary/50 transition-all duration-300 flex flex-col items-center text-center">
 <div class="w-20 h-20 rounded-full border-2 border-muted group-hover:border-primary transition-colors p-1 mb-4 overflow-hidden bg-background">
-<img alt="Motea, Bernard Joseph" class="w-full h-full grayscale group-hover:grayscale-0 transition-all object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArXhtYXcLl9-idhe0wzH_c14G1ouFqLc51_FIPdRSAJ0z7llk_7bOvnMYeOjznmHn6J_gM4dSoPtodgrfyzVg81MQTEBeOI7U4ZJBLeEkV5O6bJdM_sVfTUwOIpybIFSVkU4X7Ic3eyiWTS75SfI4krKyxynnDDObBEVFTfALcTYv8veojZmJ_GlArDJAQmZFQ6_pAWf_7WNXDCfR35bFNCbssR3IbjPviDUzyfsTgBZC7iSv15YvesqevR-TIS4gldaNsy0TPTAA">
+<img alt="Motea, Bernard Joseph" class="w-full h-full transition-all object-cover" src="assets/Images/Motea.jpg">
 </div>
 <div class="font-label-caps text-[10px] text-primary/60 mb-2">DEVELOPER_02</div>
 <div class="font-headline-md text-[20px] text-on-surface leading-tight min-h-[3rem] flex items-center justify-center">Motea, Bernard Joseph</div>
@@ -308,7 +282,7 @@
 <!-- Member 3 -->
 <div class="group bg-surface-charcoal border border-muted p-gutter rounded-xl hover:border-primary/50 transition-all duration-300 flex flex-col items-center text-center">
 <div class="w-20 h-20 rounded-full border-2 border-muted group-hover:border-primary transition-colors p-1 mb-4 overflow-hidden bg-background">
-<img alt="Camarillo, Troy Michael" class="w-full h-full grayscale group-hover:grayscale-0 transition-all object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2voRLIwABcRpnS2PMiXL-xapBJSbs0-EI3601f4zOGlgU6o3PjeFvQRzP_PVA56IeJD0DJX2p6p9aiiTUrPrAyD5StwHGoawUkW2jPSs3gwVWuIssCNm-HmZCZMte5_GrkGzx5oXHSXZ6YCU7YwRCXMQIuKdCcy7ZrZGOfgXHae0sZ-FhaxgssPqZQfu6wTDsDmtMl8xkZNkZvzQg5jjUzU3F8K9yFaMJnKF0dinXbtkBThmeWXIIoNSh9bCBKd8EqVAUIm9r4qs">
+<img alt="Camarillo, Troy Michael" class="w-full h-full transition-all object-cover" src="assets/Images/Camarillo.jpg">
 </div>
 <div class="font-label-caps text-[10px] text-primary/60 mb-2">DEVELOPER_03</div>
 <div class="font-headline-md text-[20px] text-on-surface leading-tight min-h-[3rem] flex items-center justify-center">Camarillo, Troy Michael</div>
@@ -317,7 +291,7 @@
 <!-- Member 4 -->
 <div class="group bg-surface-charcoal border border-muted p-gutter rounded-xl hover:border-primary/50 transition-all duration-300 flex flex-col items-center text-center">
 <div class="w-20 h-20 rounded-full border-2 border-muted group-hover:border-primary transition-colors p-1 mb-4 overflow-hidden bg-background">
-<img alt="Lamadora, Christian Jay" class="w-full h-full grayscale group-hover:grayscale-0 transition-all object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCt0L7dhXWx3L_-HJf2MJPbXLR-8LsSN3eSZHxS3iIcEVBtzyOO6PgSsbISAbPhsw0iCDQ8TzgmKiky2APS5_UTgiPoeiZQVBGironASo-ZOmQIpnbDjUIn_s36UXZhi1-3SVLt_QMXZqAbKTYsNWHZoOFJ7NetgW9v0tzIYgDhyVkxAB_eKumrCHfZNrwfwcswA4DkG8YzCtS_40yDOa5nLBHM-Gr_rczG6JisuMzAFShevSahkNUQ87HWJXdyYsgwAjgUG_BbZAk">
+<img alt="Lamadora, Christian Jay" class="w-full h-full transition-all object-cover" src="assets/Images/Lamadora.jpg">
 </div>
 <div class="font-label-caps text-[10px] text-primary/60 mb-2">DEVELOPER_04</div>
 <div class="font-headline-md text-[20px] text-on-surface leading-tight min-h-[3rem] flex items-center justify-center">Lamadora, Christian Jay</div>
@@ -326,7 +300,7 @@
 <!-- Member 5 -->
 <div class="group bg-surface-charcoal border border-muted p-gutter rounded-xl hover:border-primary/50 transition-all duration-300 flex flex-col items-center text-center">
 <div class="w-20 h-20 rounded-full border-2 border-muted group-hover:border-primary transition-colors p-1 mb-4 overflow-hidden bg-background">
-<img alt="Rodriguez, Glenn" class="w-full h-full grayscale group-hover:grayscale-0 transition-all object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtP9uU85rUeT9v7-vR6Zl8Xo0lP9mU5tY7x6z5mX5p_v9u8t7r6e5w4q3a2s1d0f9g8h7j6k5l4m3n2b1v0c9x8z7q6w5e4r3t2y1u0i9o8p7">
+<img alt="Rodriguez, Glenn" class="w-full h-full transition-all object-cover" src="assets/Images/Rodriguez.jpg">
 </div>
 <div class="font-label-caps text-[10px] text-primary/60 mb-2">DEVELOPER_05</div>
 <div class="font-headline-md text-[20px] text-on-surface leading-tight min-h-[3rem] flex items-center justify-center">Rodriguez, Glenn</div>
@@ -336,21 +310,13 @@
 </section>
 </div>
 <!-- HOME CONTENT END -->
+<div id="case-content" class="hidden"></div>
 <!-- TERMINAL SECTION -->
-<section class="bg-background-deep border border-muted rounded-xl overflow-hidden shadow-2xl">
-    <div class="max-w-[1200px] mx-auto px-gutter py-stack-lg">
-        <div class="p-stack-md">
-            <div class="font-label-caps text-label-caps text-primary/60 mb-2 uppercase">CASE STUDY VIEW</div>
-            <div id="case-content" class="bg-surface-charcoal border border-muted p-6 rounded-md min-h-[240px] text-on-surface-variant">
-                Select a case study from the sidebar to view it here. The content will be loaded using a small MVC controller.
-            </div>
-        </div>
-    </div>
-</section>
+
 </div>
 </main>
 <!-- FOOTER -->
-<footer class="ml-64 bg-surface-container-lowest border-t border-muted py-stack-md px-gutter flex flex-col md:flex-row justify-between items-center gap-stack-sm text-on-tertiary-fixed-variant">
+<footer class="ml-64 shrink-0 bg-surface-container-lowest border-t border-muted py-stack-md px-gutter flex flex-col md:flex-row justify-between items-center gap-stack-sm text-on-tertiary-fixed-variant">
 <div class="font-label-caps text-label-caps text-secondary-fixed tracking-widest">
             © 2024 MOT.AI// ALL_RIGHTS_RESERVED
         </div>
