@@ -95,9 +95,18 @@ async function generateSequence() {
         body.scrollTop = body.scrollHeight;
         progress.style.width = `${((i + 1) / results.length) * 100}%`;
     }
+    // Add a single-line summary showing the entire sequence on one line
+    const summaryDiv = document.createElement('div');
+    summaryDiv.className = 'mt-4 p-2 bg-background-deep/10 text-on-surface font-code-block rounded';
+    const joined = results.join(', ');
+    summaryDiv.innerHTML = `
+        <div class="text-[10px] text-on-surface-variant font-label-caps mb-1">SUMMARY</div>
+        <div class="text-sm">${joined}</div>
+    `;
+    container.appendChild(summaryDiv);
 
     const done = document.createElement('div');
-    done.className = 'mt-4 text-secondary-fixed font-bold font-label-caps text-xs';
+    done.className = 'mt-2 text-secondary-fixed font-bold font-label-caps text-xs';
     done.textContent = `> COMPUTE_STABLE: ${results.length} nodes returned.`;
     container.appendChild(done);
     document.getElementById('terminal-content').scrollTop = document.getElementById('terminal-content').scrollHeight;
