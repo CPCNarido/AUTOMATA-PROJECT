@@ -195,14 +195,14 @@
 <label class="font-label-caps text-[10px] text-on-surface-variant block">INTEGER_A</label>
 <div class="relative flex items-center">
 <span class="absolute left-3 text-primary font-mono">&gt;</span>
-<input class="w-full bg-background-deep border border-muted pl-8 pr-4 py-3 text-primary font-code-block focus:border-primary focus:ring-1 focus:ring-primary focus:ring-opacity-20 outline-none neon-glow transition-all" id="inputA" type="number" value="48"/>
+<input class="w-full bg-background-deep border border-muted pl-8 pr-4 py-3 text-primary font-code-block focus:border-primary focus:ring-1 focus:ring-primary focus:ring-opacity-20 outline-none neon-glow transition-all" id="inputA" inputmode="numeric" spellcheck="false" type="text" value="48"/>
 </div>
 </div>
 <div class="space-y-2">
 <label class="font-label-caps text-[10px] text-on-surface-variant block">INTEGER_B</label>
 <div class="relative flex items-center">
 <span class="absolute left-3 text-primary font-mono">&gt;</span>
-<input class="w-full bg-background-deep border border-muted pl-8 pr-4 py-3 text-primary font-code-block focus:border-primary focus:ring-1 focus:ring-primary focus:ring-opacity-20 outline-none neon-glow transition-all" id="inputB" type="number" value="18"/>
+<input class="w-full bg-background-deep border border-muted pl-8 pr-4 py-3 text-primary font-code-block focus:border-primary focus:ring-1 focus:ring-primary focus:ring-opacity-20 outline-none neon-glow transition-all" id="inputB" inputmode="numeric" spellcheck="false" type="text" value="18"/>
 </div>
 </div>
 </div>
@@ -327,6 +327,15 @@
 
             let gcd = a;
             let lcm = (originalA === 0 || originalB === 0) ? 0 : Math.abs(originalA * originalB) / gcd;
+            let lcmSteps = [];
+
+            if (originalA === 0 || originalB === 0) {
+                lcmSteps.push(`LCM(${originalA}, ${originalB}) = 0 because one value is 0`);
+            } else {
+                lcmSteps.push(`LCM(${originalA}, ${originalB}) = |${originalA} × ${originalB}| / GCD(${originalA}, ${originalB})`);
+                lcmSteps.push(`LCM(${originalA}, ${originalB}) = ${Math.abs(originalA * originalB)} / ${gcd}`);
+                lcmSteps.push(`LCM(${originalA}, ${originalB}) = ${lcm}`);
+            }
 
             // Sequential animation of steps
             steps.forEach((step, index) => {
@@ -347,6 +356,22 @@
                 gcdValDisp.innerText = gcd;
                 lcmValDisp.innerText = lcm;
             }, steps.length * 200 + 300);
+
+            setTimeout(() => {
+                const lcmHeader = document.createElement('div');
+                lcmHeader.className = 'mt-6 text-secondary-fixed font-bold';
+                lcmHeader.textContent = 'LCM SOLUTION:';
+                resultArea.appendChild(lcmHeader);
+
+                lcmSteps.forEach((line) => {
+                    const lcmLine = document.createElement('div');
+                    lcmLine.className = 'text-on-surface-variant';
+                    lcmLine.textContent = line;
+                    resultArea.appendChild(lcmLine);
+                });
+
+                resultArea.scrollTop = resultArea.scrollHeight;
+            }, steps.length * 200 + 500);
         }
 
         // Initialize on load

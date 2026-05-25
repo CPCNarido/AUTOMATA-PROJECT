@@ -1,3 +1,26 @@
+const numberFormatter = new Intl.NumberFormat('en-US');
+
+function formatInteger(value) {
+    return numberFormatter.format(value);
+}
+
+function parseFormattedInteger(value) {
+    return parseInt(String(value).replace(/,/g, ''), 10);
+}
+
+function formatIntegerInput(input, allowNegative = true) {
+    const rawValue = String(input.value).replace(/,/g, '');
+    const normalizedValue = allowNegative ? rawValue.replace(/(?!^)-/g, '') : rawValue.replace(/-/g, '');
+    const parsedValue = parseInt(normalizedValue, 10);
+
+    if (input.value === '' || Number.isNaN(parsedValue) || normalizedValue === '-') {
+        input.value = normalizedValue === '-' && allowNegative ? '-' : '';
+        return;
+    }
+
+    input.value = (normalizedValue.startsWith('-') && allowNegative ? '-' : '') + formatInteger(Math.abs(parsedValue));
+}
+
 const codeBlocks = {
     division: `<span class="text-code-keyword">public class</span> <span class="text-primary">DivisionLogic</span> {
     <span class="text-code-comment">// Implements the Euclidean Division Theorem</span>
@@ -39,6 +62,15 @@ const breakdownContainer = document.getElementById('breakdownContainer');
 const inputA = document.getElementById('inputA');
 const inputB = document.getElementById('inputB');
 
+[inputA, inputB].forEach((input) => {
+    if (!input) {
+        return;
+    }
+
+    input.addEventListener('input', () => formatIntegerInput(input, true));
+    formatIntegerInput(input, true);
+});
+
 tabDiv.addEventListener('click', () => {
     codeDisplay.innerHTML = codeBlocks.division;
     tabDiv.className = 'font-label-caps text-label-caps text-primary border-b border-primary pb-0.5';
@@ -52,8 +84,8 @@ tabEuc.addEventListener('click', () => {
 });
 
 runBtn.addEventListener('click', () => {
-    let a = parseInt(inputA.value);
-    let b = parseInt(inputB.value);
+    let a = parseFormattedInteger(inputA.value);
+    let b = parseFormattedInteger(inputB.value);
 
     if (isNaN(a) || isNaN(b) || b === 0) {
         alert('Please enter valid integers. B cannot be zero.');
@@ -73,7 +105,7 @@ runBtn.addEventListener('click', () => {
         stepDiv.className = 'step-entry opacity-0 translate-x-4 transition-all duration-300';
         stepDiv.innerHTML = `
             <div class="text-[10px] text-on-surface-variant font-label-caps mb-1">STEP_${step.toString().padStart(2, '0')}</div>
-            <div><span class="text-primary">${currentA}</span> = (<span class="text-secondary-fixed">${currentB}</span> × <span class="text-primary">${q}</span>) + <span class="text-error">${r}</span></div>
+            <div><span class="text-primary">${formatInteger(currentA)}</span> = (<span class="text-secondary-fixed">${formatInteger(currentB)}</span> × <span class="text-primary">${formatInteger(q)}</span>) + <span class="text-error">${formatInteger(r)}</span></div>
         `;
         breakdownContainer.appendChild(stepDiv);
 
@@ -91,8 +123,8 @@ runBtn.addEventListener('click', () => {
     finalDiv.innerHTML = `
         <div class="font-label-caps text-[10px] text-secondary-fixed mb-1">FINAL_RESULT</div>
         <div class="flex justify-between">
-            <span class="text-on-surface">GCD(${a}, ${b}):</span>
-            <span class="text-secondary-fixed font-bold">${currentA}</span>
+            <span class="text-on-surface">GCD(${formatInteger(a)}, ${formatInteger(b)}):</span>
+            <span class="text-secondary-fixed font-bold">${formatInteger(currentA)}</span>
         </div>
     `;
     breakdownContainer.appendChild(finalDiv);

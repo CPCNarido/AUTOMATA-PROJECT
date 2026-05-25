@@ -1,3 +1,24 @@
+const numberFormatter = new Intl.NumberFormat('en-US');
+
+function formatInteger(value) {
+    return numberFormatter.format(value);
+}
+
+function parseFormattedInteger(value) {
+    return parseInt(String(value).replace(/,/g, ''), 10);
+}
+
+function formatIntegerInput(input) {
+    const parsedValue = parseFormattedInteger(input.value);
+
+    if (input.value === '' || Number.isNaN(parsedValue)) {
+        input.value = '';
+        return;
+    }
+
+    input.value = formatInteger(parsedValue);
+}
+
 let currentSequence = 'fibonacci';
 
 const sequenceData = {
@@ -72,8 +93,8 @@ function switchTab(type) {
 }
 
 async function generateSequence() {
-    const n = parseInt(document.getElementById('iteration-input').value);
-    if (isNaN(n) || n < 1) return;
+    const n = parseFormattedInteger(document.getElementById('iteration-input').value);
+    if (isNaN(n) || n < 1 || n > 50) return;
 
     const container = document.getElementById('sequence-output');
     const progress = document.getElementById('progress-bar');
@@ -88,7 +109,7 @@ async function generateSequence() {
         line.className = 'flex items-center gap-3 mb-1 pl-2 border-l border-primary/20 hover:bg-primary/5 transition-colors';
         line.innerHTML = `
             <span class="text-[10px] text-on-surface-variant/40 font-label-caps w-16">n[${i}]</span> 
-            <span class="text-code-string font-bold">${results[i]}</span>
+            <span class="text-code-string font-bold">${formatInteger(results[i])}</span>
         `;
         container.appendChild(line);
         const body = document.getElementById('terminal-content');
@@ -98,7 +119,7 @@ async function generateSequence() {
     // Add a single-line summary showing the entire sequence on one line
     const summaryDiv = document.createElement('div');
     summaryDiv.className = 'mt-4 p-2 bg-background-deep/10 text-on-surface font-code-block rounded';
-    const joined = results.join(', ');
+    const joined = results.map((value) => formatInteger(value)).join(', ');
     summaryDiv.innerHTML = `
         <div class="text-[10px] text-on-surface-variant font-label-caps mb-1">SUMMARY</div>
         <div class="text-sm">${joined}</div>
@@ -107,9 +128,15 @@ async function generateSequence() {
 
     const done = document.createElement('div');
     done.className = 'mt-2 text-secondary-fixed font-bold font-label-caps text-xs';
-    done.textContent = `> COMPUTE_STABLE: ${results.length} nodes returned.`;
+    done.textContent = `> COMPUTE_STABLE: ${formatInteger(results.length)} nodes returned.`;
     container.appendChild(done);
     document.getElementById('terminal-content').scrollTop = document.getElementById('terminal-content').scrollHeight;
+}
+
+const iterationInput = document.getElementById('iteration-input');
+if (iterationInput) {
+    iterationInput.addEventListener('input', () => formatIntegerInput(iterationInput));
+    formatIntegerInput(iterationInput);
 }
 
 window.switchTab = switchTab;
