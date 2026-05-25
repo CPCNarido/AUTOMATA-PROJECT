@@ -94,10 +94,17 @@ function switchTab(type) {
 
 async function generateSequence() {
     const n = parseFormattedInteger(document.getElementById('iteration-input').value);
-    if (isNaN(n) || n < 1 || n > 50) return;
-
     const container = document.getElementById('sequence-output');
     const progress = document.getElementById('progress-bar');
+
+    // Sequence-specific minimums: Fibonacci & Lucas require N >= 3, Tribonacci requires N >= 4
+    const minN = (currentSequence === 'tribonacci') ? 4 : 3;
+    if (isNaN(n) || n < minN || n > 50) {
+        if (container) {
+            container.innerHTML = `<div class="text-error/70 mt-2">> ERROR: ${sequenceData[currentSequence].title} requires N \u2265 ${minN} and \u2264 50.</div>`;
+        }
+        return;
+    }
 
     container.innerHTML = `<span class="text-on-surface-variant/40">> EXEC ${currentSequence.toUpperCase()} (N=${n})</span><br>`;
 
