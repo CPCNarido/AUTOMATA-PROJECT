@@ -92,6 +92,11 @@ runBtn.addEventListener('click', () => {
         return;
     }
 
+    if (a < b) {
+        alert('Please enter valid integers. Integer A must not be less than Integer B.');
+        return;
+    }
+
     breakdownContainer.innerHTML = '';
     let currentA = Math.abs(a);
     let currentB = Math.abs(b);

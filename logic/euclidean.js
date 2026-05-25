@@ -34,6 +34,11 @@ function runAlgorithm() {
         return;
     }
 
+    if (valA < valB) {
+        resultArea.innerHTML = '<div class="text-error">ERROR: Integer A must not be less than Integer B.</div>';
+        return;
+    }
+
     resultArea.innerHTML = '';
     metrics.classList.remove('hidden');
 
